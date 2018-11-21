@@ -31,6 +31,7 @@ Partial Class Form1
         Me.CloseClientToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DownloadAndExecuteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Timer_Ping = New System.Windows.Forms.Timer(Me.components)
+        Me.RemoteDesktopToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClientMenu.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -66,9 +67,9 @@ Partial Class Form1
         'ClientMenu
         '
         Me.ClientMenu.ImageScalingSize = New System.Drawing.Size(24, 24)
-        Me.ClientMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CloseClientToolStripMenuItem, Me.DownloadAndExecuteToolStripMenuItem})
+        Me.ClientMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CloseClientToolStripMenuItem, Me.DownloadAndExecuteToolStripMenuItem, Me.RemoteDesktopToolStripMenuItem})
         Me.ClientMenu.Name = "ClientMenu"
-        Me.ClientMenu.Size = New System.Drawing.Size(282, 64)
+        Me.ClientMenu.Size = New System.Drawing.Size(282, 127)
         '
         'CloseClientToolStripMenuItem
         '
@@ -86,6 +87,12 @@ Partial Class Form1
         '
         Me.Timer_Ping.Enabled = True
         Me.Timer_Ping.Interval = 5000
+        '
+        'RemoteDesktopToolStripMenuItem
+        '
+        Me.RemoteDesktopToolStripMenuItem.Name = "RemoteDesktopToolStripMenuItem"
+        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(281, 30)
+        Me.RemoteDesktopToolStripMenuItem.Text = "Remote Desktop"
         '
         'Form1
         '
@@ -109,4 +116,5 @@ Partial Class Form1
     Friend WithEvents CloseClientToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DownloadAndExecuteToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Timer_Ping As Timer
+    Friend WithEvents RemoteDesktopToolStripMenuItem As ToolStripMenuItem
 End Class

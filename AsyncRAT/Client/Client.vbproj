@@ -55,9 +55,14 @@
     <Compile Include="ClientSocket.vb" />
     <Compile Include="Helper.vb" />
     <Compile Include="Main.vb" />
+    <Compile Include="RemoteDesktop.vb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

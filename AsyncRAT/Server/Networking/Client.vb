@@ -24,7 +24,7 @@ Public Class Client
         Try
             Dim Received As Integer = Me.C.EndReceive(ar)
             If Received > 0 Then
-                Await Me.MS.WriteAsync(Me.Buffer, 0, Me.Buffer.Length)
+                Await Me.MS.WriteAsync(Me.Buffer, 0, Received)
 
                 If BS(Me.MS.ToArray).Contains(Settings.EOF) Then
                     RaiseEvent Read(Me, Me.MS.ToArray)
@@ -33,7 +33,7 @@ Public Class Client
                     Me.MS = New MemoryStream
                 End If
             End If
-            Me.C.BeginReceive(Me.Buffer, 0, Me.Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), Nothing)
+            Me.C.BeginReceive(Me.Buffer, 0, Me.Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), Me)
         Catch ex As Exception
             Me.isDisconnected()
         End Try
