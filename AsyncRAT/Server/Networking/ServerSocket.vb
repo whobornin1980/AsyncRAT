@@ -13,11 +13,15 @@ Public Class ServerSocket
         S.SendTimeout = -1
         S.Bind(IpEndPoint)
         S.Listen(999)
-        BegingAccpet()
+
+        Dim T As New Threading.Thread(AddressOf BegingAccpet) : T.Start()
     End Sub
 
     Sub BegingAccpet()
-        S.BeginAccept(New AsyncCallback(AddressOf EndAccept), Nothing)
+        While True
+            S.BeginAccept(New AsyncCallback(AddressOf EndAccept), S)
+            Threading.Thread.Sleep(1)
+        End While
     End Sub
 
     Sub EndAccept(ByVal ar As IAsyncResult)
@@ -26,7 +30,6 @@ Public Class ServerSocket
             C.C.BeginReceive(C.Buffer, 0, C.Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf C.BeginReceive), C)
         Catch ex As Exception
         End Try
-        BegingAccpet()
     End Sub
 
 

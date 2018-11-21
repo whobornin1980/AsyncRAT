@@ -1,5 +1,16 @@
 ﻿Imports System.IO
 
+'
+
+'       │ Author     : NYAN CAT
+'       │ Name       : AsyncRAT
+
+'       Contact Me   : https://github.com/NYAN-x-CAT
+
+'       This program Is distributed fortfgdb educational purposes only.
+
+'
+
 Public Class Form1
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -144,5 +155,9 @@ Public Class Form1
             Catch ex As Exception
             End Try
         End If
+    End Sub
+
+    Private Sub Timer_Status_Tick(sender As Object, e As EventArgs) Handles Timer_Status.Tick
+        ToolStripStatusLabel1.Text = String.Format("Total Clients [{0}]       Selected Clients [{1}]", LV1.Items.Count.ToString, LV1.SelectedItems.Count.ToString)
     End Sub
 End Class
