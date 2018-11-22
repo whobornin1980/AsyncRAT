@@ -35,11 +35,11 @@ Public Class ClientSocket
 
             While isConnected
                 Threading.Thread.Sleep(10 * 1000)
-                If S.Poll(-1, SelectMode.SelectRead) And S.Available <= 0 Then
-                    Exit While
-                End If
+                'If S.Poll(-1, SelectMode.SelectRead) And S.Available <= 0 Then
+                '    Exit While
+                'End If
+                Send("Alive?")
             End While
-            Disconnected()
 
         Catch ex As Exception
             Disconnected()
