@@ -34,9 +34,12 @@ Public Class ClientSocket
             S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf EndReceive), S)
 
             While isConnected
-                Threading.Thread.Sleep(30 * 1000)
-                Send("Alive?")
+                Threading.Thread.Sleep(10 * 1000)
+                If S.Poll(-1, SelectMode.SelectRead) And S.Available <= 0 Then
+                    Exit While
+                End If
             End While
+            Disconnected()
 
         Catch ex As Exception
             Disconnected()
