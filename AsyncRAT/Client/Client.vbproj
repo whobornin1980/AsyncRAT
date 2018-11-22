@@ -52,6 +52,7 @@
     <Import Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Messages.vb" />
     <Compile Include="ClientSocket.vb" />
     <Compile Include="Helper.vb" />
     <Compile Include="Main.vb" />

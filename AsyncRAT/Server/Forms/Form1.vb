@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.ComponentModel
+Imports System.IO
 
 '
 
@@ -7,15 +8,15 @@
 
 '       Contact Me   : https://github.com/NYAN-x-CAT
 
-'       This program Is distributed fortfgdb educational purposes only.
+'       This program Is distributed for educational purposes only.
 
 '
 
 Public Class Form1
+    Public S As New ServerSocket
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Messages.F = Me
-        Dim S As New ServerSocket
 
         Try
             S.Start(Settings.PORT)
@@ -158,6 +159,18 @@ Public Class Form1
     End Sub
 
     Private Sub Timer_Status_Tick(sender As Object, e As EventArgs) Handles Timer_Status.Tick
-        ToolStripStatusLabel1.Text = String.Format("Total Clients [{0}]       Selected Clients [{1}]", LV1.Items.Count.ToString, LV1.SelectedItems.Count.ToString)
+        Try
+            ToolStripStatusLabel1.Text = String.Format("Total Clients [{0}]       Selected Clients [{1}]", LV1.Items.Count.ToString, LV1.SelectedItems.Count.ToString)
+            Me.Text = "AsyncRAT  // NYAN CAT  // " + DateTime.Now
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub Form1_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        Try
+            Environment.Exit(0)
+        Catch ex As Exception
+        End Try
     End Sub
 End Class

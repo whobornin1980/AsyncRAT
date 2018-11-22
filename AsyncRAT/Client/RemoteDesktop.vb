@@ -2,6 +2,8 @@
 Imports System.Drawing.Imaging
 Imports System.Windows.Forms
 
+'//Nyan Cat - simple remote desktop. "capture,resize,compress"
+
 Public Class RemoteDesktop
 
     Public Shared Function Capture(ByVal W As Integer, ByVal H As Integer) As Byte()
