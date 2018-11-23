@@ -8,7 +8,7 @@ using System.Windows.Forms;
 public class ClientSocket
 {
     public static Socket S;
-    public static byte[] Buffer = new byte[2048001];
+    public static byte[] Buffer = new byte[5048001];
     public static MemoryStream MS = new MemoryStream();
 
     public static string EOF = "<EOF>";
@@ -32,6 +32,12 @@ public class ClientSocket
 
             Buffer = new byte[2048001];
             MS = new MemoryStream();
+
+            S.ReceiveTimeout = -1;
+            S.SendTimeout = -1;
+
+            S.ReceiveBufferSize = 5048001;
+            S.SendBufferSize = 5048001;
 
             S.Connect(ipEndPoint);
             Console.WriteLine("Connected");
