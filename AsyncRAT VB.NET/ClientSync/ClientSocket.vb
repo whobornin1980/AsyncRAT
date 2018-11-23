@@ -68,13 +68,9 @@ Public Class ClientSocket
                 If i > 300 Then
                     i = 0
                     'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.poll?view=netframework-4.0
-                    If S.Poll(0, SelectMode.SelectRead) And S.Available <= 0 Then
+                    If S.Poll(0, 0) AndAlso S.Available = 0 OrElse Not S.Connected Then
                         Exit While
                     End If
-                End If
-
-                If isConnected = False OrElse Not S.Connected Then
-                    Exit While
                 End If
 
                 'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.available?view=netframework-4.0
