@@ -56,7 +56,6 @@ Public Class Client
                 Exit Sub
             Else
                 L.Remove()
-                L = Nothing
             End If
         Catch ex As Exception
         End Try
@@ -64,13 +63,11 @@ Public Class Client
         Try
             C.Close()
             C.Dispose()
-            C = Nothing
         Catch ex As Exception
         End Try
 
         Try
             MS.Dispose()
-            MS = Nothing
         Catch ex As Exception
         End Try
 

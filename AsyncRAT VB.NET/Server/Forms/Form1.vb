@@ -49,7 +49,6 @@ Public Class Form1
                 Try
                     Await M.FlushAsync()
                     M.Dispose()
-                    S = Nothing
                 Catch ex As Exception
                 End Try
 
@@ -87,7 +86,6 @@ Public Class Form1
                     Try
                         Await M.FlushAsync()
                         M.Dispose()
-                        S = Nothing
                     Catch ex As Exception
                     End Try
 
@@ -119,7 +117,6 @@ Public Class Form1
                 Try
                     Await M.FlushAsync()
                     M.Dispose()
-                    S = Nothing
                 Catch ex As Exception
                 End Try
 
@@ -130,10 +127,11 @@ Public Class Form1
 
     Private Sub Timer_Status_Tick(sender As Object, e As EventArgs) Handles Timer_Status.Tick
         Try
+
             ToolStripStatusLabel1.Text = String.Format("Total Clients [{0}]       Selected Clients [{1}]", LV1.Items.Count.ToString, LV1.SelectedItems.Count.ToString)
             Me.Text = "AsyncRAT  // NYAN CAT  // " + DateTime.Now
-        Catch ex As Exception
 
+        Catch ex As Exception
         End Try
     End Sub
 
@@ -158,7 +156,6 @@ Public Class Form1
                 Try
                     Await M.FlushAsync()
                     M.Dispose()
-                    S = Nothing
                 Catch ex As Exception
                 End Try
 

