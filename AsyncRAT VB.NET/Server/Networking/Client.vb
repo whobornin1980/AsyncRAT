@@ -1,6 +1,13 @@
 ﻿Imports System.IO
 Imports System.Net.Sockets
 
+'       │ Author     : NYAN CAT
+'       │ Name       : AsyncRAT
+
+'       Contact Me   : https://github.com/NYAN-x-CAT
+
+'       This program Is distributed for educational purposes only.
+
 Public Class Client
 
     Public IsConnected As Boolean = True

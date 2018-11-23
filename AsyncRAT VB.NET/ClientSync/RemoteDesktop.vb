@@ -2,7 +2,12 @@
 Imports System.Drawing.Imaging
 Imports System.Windows.Forms
 
-'//Nyan Cat - simple remote desktop. "capture,resize,compress"
+'       │ Author     : NYAN CAT
+'       │ Name       : Simple remote desktop. "capture,resize,compress"
+
+'       Contact Me   : https://github.com/NYAN-x-CAT
+
+'       This program Is distributed for educational purposes only.
 
 Public Class RemoteDesktop
 
