@@ -148,7 +148,9 @@ re:
         Send(SB(S))
     End Sub
 
-    Private Shared Function SplitWord(ByVal b As Byte(), ByVal Word As String) As Array 'credit to njq8
+    'credit to njq8
+    'a better way to split packets
+    Private Shared Function SplitWord(ByVal b As Byte(), ByVal Word As String) As Array
         Dim a As New Collections.Generic.List(Of Byte())
         Dim M As New MemoryStream
         Dim MM As New MemoryStream

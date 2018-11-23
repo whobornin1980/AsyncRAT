@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Server", "Server\Server.vbproj", "{740DE624-F66B-44B8-8FA0-A7810D8E573C}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ClientAsync", "ClientAsync\ClientAsync.vbproj", "{85A05A41-5C00-4CC4-A29E-B1982B680C11}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ClientSync", "ClientSync\ClientSync.vbproj", "{739326A4-01C7-47B0-B552-9D1C7A09316D}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{740DE624-F66B-44B8-8FA0-A7810D8E573C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{740DE624-F66B-44B8-8FA0-A7810D8E573C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{740DE624-F66B-44B8-8FA0-A7810D8E573C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{85A05A41-5C00-4CC4-A29E-B1982B680C11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{85A05A41-5C00-4CC4-A29E-B1982B680C11}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{85A05A41-5C00-4CC4-A29E-B1982B680C11}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{85A05A41-5C00-4CC4-A29E-B1982B680C11}.Release|Any CPU.Build.0 = Release|Any CPU
 		{739326A4-01C7-47B0-B552-9D1C7A09316D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{739326A4-01C7-47B0-B552-9D1C7A09316D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{739326A4-01C7-47B0-B552-9D1C7A09316D}.Release|Any CPU.ActiveCfg = Release|Any CPU
