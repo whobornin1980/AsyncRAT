@@ -48,7 +48,6 @@ Public Class ClientSocket
     Private Shared Sub Read()
 
         Dim i As Integer = 0
-        Dim ii As Integer = 0
 
         While isConnected = True
 
@@ -57,23 +56,10 @@ Public Class ClientSocket
 
                 i += 1
 
-                If i >= 500 Then
-
-                    Diagnostics.Debug.WriteLine("Checking Server #1")
-
+                If i = 1000 Then
+                    Diagnostics.Debug.WriteLine("Checking Server")
                     i = 0
-                    ii += 1
-
-                    If S.Poll(-1, SelectMode.SelectRead) And S.Available <= 0 Then
-                        Exit While
-                    End If
-
-                    If ii = 5 Then
-                        Diagnostics.Debug.WriteLine("Checking Server #2")
-                        ii = 0
-                        Send("alive?")
-                    End If
-
+                    Send("alive?")
                 End If
 
 
