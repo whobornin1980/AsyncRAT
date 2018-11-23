@@ -57,6 +57,7 @@ Public Class ClientSocket
     Private Shared Sub Read()
 
         Dim i As Integer = 0
+        Dim ii As Integer = 0
 
         While isConnected = True
 
@@ -66,11 +67,19 @@ Public Class ClientSocket
                 i += 1
 
                 If i > 300 Then
+
                     i = 0
                     'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.poll?view=netframework-4.0
                     If S.Poll(0, 0) AndAlso S.Available = 0 OrElse Not S.Connected Then
                         Exit While
                     End If
+
+                    ii += 1
+                    If ii = 10 Then
+                        ii = 0
+                        Send("if server shutdown suddenly")
+                    End If
+
                 End If
 
                 'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.available?view=netframework-4.0
@@ -85,6 +94,7 @@ Public Class ClientSocket
 re:
 
                     If BS(MS.ToArray).Contains(EOF) Then
+                        Diagnostics.Debug.WriteLine("Data = " + BS(MS.ToArray))
 
                         Dim A As Array = SplitWord(MS.ToArray, EOF)
                         Dim T As New Threading.Thread(AddressOf Messages.Read)
