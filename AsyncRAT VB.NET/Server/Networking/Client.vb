@@ -13,8 +13,6 @@ Public Class Client
 
     Sub New(ByVal CL As Socket)
         Me.C = CL
-        Me.C.ReceiveTimeout = -1
-        Me.C.SendTimeout = -1
 
         Me.Buffer = New Byte(1024 * 100) {}
         Me.MS = New MemoryStream

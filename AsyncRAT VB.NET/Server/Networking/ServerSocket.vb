@@ -9,8 +9,6 @@ Public Class ServerSocket
         Dim IpEndPoint As IPEndPoint = New IPEndPoint(IPAddress.Any, Port)
         S.ReceiveBufferSize = 1024 * 100
         S.SendBufferSize = 1024 * 100
-        S.ReceiveTimeout = -1
-        S.SendTimeout = -1
         S.Bind(IpEndPoint)
         S.Listen(999)
 

