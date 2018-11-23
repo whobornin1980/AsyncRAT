@@ -1,3 +1,1 @@
-# AsyncRAT C#
-
-abandoned project
+# abandoned project
