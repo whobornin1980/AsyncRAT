@@ -13,29 +13,35 @@ Public Class Client
 
     Sub New(ByVal CL As Socket)
         Me.C = CL
+        Me.C.ReceiveTimeout = -1
+        Me.C.SendTimeout = -1
+
         Me.Buffer = New Byte(1024 * 100) {}
-        Me.MS = New IO.MemoryStream
+        Me.MS = New MemoryStream
         Me.IP = CL.RemoteEndPoint.ToString
+
+        C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
     End Sub
 
     Async Sub BeginReceive(ByVal ar As IAsyncResult)
-        If Me.IsConnected = False Then Me.isDisconnected()
+        If IsConnected = False Then isDisconnected()
 
         Try
-            Dim Received As Integer = Me.C.EndReceive(ar)
+            Dim Received As Integer = C.EndReceive(ar)
             If Received > 0 Then
-                Await Me.MS.WriteAsync(Me.Buffer, 0, Received)
+                Await MS.WriteAsync(Buffer, 0, Received)
 
-                If BS(Me.MS.ToArray).Contains(Settings.EOF) Then
-                    RaiseEvent Read(Me, Me.MS.ToArray)
-                    Await Me.MS.FlushAsync
-                    Me.MS.Dispose()
-                    Me.MS = New MemoryStream
+                If BS(MS.ToArray).Contains(Settings.EOF) Then
+                    RaiseEvent Read(Me, MS.ToArray)
+                    Await MS.FlushAsync
+                    MS.Dispose()
+                    MS = New MemoryStream
                 End If
+
             End If
-            Me.C.BeginReceive(Me.Buffer, 0, Me.Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), Me)
+            C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
         Catch ex As Exception
-            Me.isDisconnected()
+            isDisconnected()
         End Try
     End Sub
 
@@ -49,7 +55,7 @@ Public Class Client
                 Messages.F.Invoke(New _isDisconnected(AddressOf isDisconnected))
                 Exit Sub
             Else
-                Me.L.Remove()
+                L.Remove()
                 L = Nothing
             End If
         Catch ex As Exception

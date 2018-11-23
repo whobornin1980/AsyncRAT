@@ -27,7 +27,6 @@ Public Class ServerSocket
     Sub EndAccept(ByVal ar As IAsyncResult)
         Try
             Dim C As New Client(S.EndAccept(ar))
-            C.C.BeginReceive(C.Buffer, 0, C.Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf C.BeginReceive), C)
         Catch ex As Exception
         End Try
     End Sub

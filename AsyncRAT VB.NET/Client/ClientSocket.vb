@@ -5,7 +5,7 @@ Imports System.IO
 Public Class ClientSocket
 
     Public Shared S As Socket
-    Public Shared Buffer(1024 * 2000) As Byte
+    Public Shared Buffer(1024 * 5000) As Byte
     Public Shared MS As New MemoryStream
 
     Public Shared EOF As String = "<EOF>"
@@ -23,8 +23,13 @@ Public Class ClientSocket
             Dim ipAddress As IPAddress = IPAddress.Parse("127.0.0.1")
             Dim ipEndPoint As IPEndPoint = New IPEndPoint(ipAddress, 2020)
 
-            Buffer = New Byte(1024 * 2000) {}
+            Buffer = New Byte(1024 * 5000) {}
             MS = New MemoryStream
+
+            S.ReceiveTimeout = -1
+            S.SendTimeout = -1
+            S.SendBufferSize = 1024 * 5000
+            S.ReceiveBufferSize = 1024 * 5000
 
             S.Connect(ipEndPoint)
 
@@ -60,6 +65,7 @@ Public Class ClientSocket
             Dim Received As Integer = S.EndReceive(ar)
             If Received > 0 Then
                 MS.Write(Buffer, 0, Received)
+                Diagnostics.Debug.WriteLine(String.Format("Received {0}", Received))
                 If BS(MS.ToArray).Contains(EOF) Then
 
                     Dim T As New Threading.Thread(AddressOf Messages.Read)
