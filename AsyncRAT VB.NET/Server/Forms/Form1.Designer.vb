@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,13 +20,15 @@ Partial Class Form1
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.LV1 = New System.Windows.Forms.ListView()
         Me._IP = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me._ID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me._Username = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me._OS = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me._VER = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ClientMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.CloseClientToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DownloadAndExecuteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -41,7 +43,7 @@ Partial Class Form1
         '
         'LV1
         '
-        Me.LV1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me._IP, Me._Username, Me._OS})
+        Me.LV1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me._IP, Me._ID, Me._Username, Me._OS, Me._VER})
         Me.LV1.ContextMenuStrip = Me.ClientMenu
         Me.LV1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.LV1.FullRowSelect = True
@@ -56,41 +58,51 @@ Partial Class Form1
         '_IP
         '
         Me._IP.Text = "IP"
-        Me._IP.Width = 197
+        Me._IP.Width = 147
+        '
+        '_ID
+        '
+        Me._ID.Text = "ID"
+        Me._ID.Width = 154
         '
         '_Username
         '
         Me._Username.Text = "Username"
-        Me._Username.Width = 182
+        Me._Username.Width = 159
         '
         '_OS
         '
         Me._OS.Text = "Operating System"
         Me._OS.Width = 308
         '
+        '_VER
+        '
+        Me._VER.Text = "Version"
+        Me._VER.Width = 148
+        '
         'ClientMenu
         '
         Me.ClientMenu.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.ClientMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CloseClientToolStripMenuItem, Me.DownloadAndExecuteToolStripMenuItem, Me.RemoteDesktopToolStripMenuItem})
         Me.ClientMenu.Name = "ClientMenu"
-        Me.ClientMenu.Size = New System.Drawing.Size(269, 94)
+        Me.ClientMenu.Size = New System.Drawing.Size(282, 94)
         '
         'CloseClientToolStripMenuItem
         '
         Me.CloseClientToolStripMenuItem.Name = "CloseClientToolStripMenuItem"
-        Me.CloseClientToolStripMenuItem.Size = New System.Drawing.Size(268, 30)
+        Me.CloseClientToolStripMenuItem.Size = New System.Drawing.Size(281, 30)
         Me.CloseClientToolStripMenuItem.Text = "Close Client"
         '
         'DownloadAndExecuteToolStripMenuItem
         '
         Me.DownloadAndExecuteToolStripMenuItem.Name = "DownloadAndExecuteToolStripMenuItem"
-        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(268, 30)
+        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(281, 30)
         Me.DownloadAndExecuteToolStripMenuItem.Text = "Download And Execute"
         '
         'RemoteDesktopToolStripMenuItem
         '
         Me.RemoteDesktopToolStripMenuItem.Name = "RemoteDesktopToolStripMenuItem"
-        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(268, 30)
+        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(281, 30)
         Me.RemoteDesktopToolStripMenuItem.Text = "Remote Desktop"
         '
         'Timer_Ping
@@ -126,6 +138,7 @@ Partial Class Form1
         Me.ClientSize = New System.Drawing.Size(931, 314)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.LV1)
+        Me.MinimumSize = New System.Drawing.Size(953, 378)
         Me.Name = "Form1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "AsyncRAT  // NYAN CAT"
@@ -149,4 +162,6 @@ Partial Class Form1
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
     Friend WithEvents Timer_Status As Timer
+    Friend WithEvents _VER As ColumnHeader
+    Friend WithEvents _ID As ColumnHeader
 End Class
