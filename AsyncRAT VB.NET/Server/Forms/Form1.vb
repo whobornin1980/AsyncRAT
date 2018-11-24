@@ -170,4 +170,30 @@ Public Class Form1
         Catch ex As Exception
         End Try
     End Sub
+
+    Private Sub LV1_MouseMove(sender As Object, e As MouseEventArgs) Handles LV1.MouseMove
+        Try
+            Dim hitInfo = LV1.HitTest(e.Location)
+            If e.Button = MouseButtons.Left AndAlso (hitInfo.Item IsNot Nothing OrElse hitInfo.SubItem IsNot Nothing) Then listView1.Items(hitInfo.Item.Index).Selected = True
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    'Private mouseDownLV1 As Boolean
+    'Private Sub LV1_MouseDown(sender As Object, e As MouseEventArgs) Handles LV1.MouseDown
+    '    mouseDownLV1 = True
+    'End Sub
+
+    'Private Sub LV1_MouseMove(sender As Object, e As MouseEventArgs) Handles LV1.MouseMove
+    '    If mouseDownLV1 Then
+    '        Try
+    '            LV1.Items(LV1.HitTest(e.Location).Item.Index).Selected = True
+    '        Catch : End Try
+    '    End If
+    'End Sub
+
+    'Private Sub LV1_MouseUp(sender As Object, e As MouseEventArgs) Handles LV1.MouseUp
+    '    mouseDownLV1 = False
+    'End Sub
+
 End Class
