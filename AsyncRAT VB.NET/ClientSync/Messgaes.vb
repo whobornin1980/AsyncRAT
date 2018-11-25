@@ -23,7 +23,7 @@ Public Class Messages
                     ClientSocket.Send("RD-")
 
                 Case "RD+"
-                    ClientSocket.Send("RD+" + SPL + BS(RemoteDesktop.Capture(A(1), A(2))))
+                    RemoteDesktop.Capture(A(1), A(2))
 
             End Select
         Catch ex As Exception

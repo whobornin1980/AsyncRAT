@@ -42,11 +42,11 @@
                             Dim RD As RemoteDesktop = My.Application.OpenForms("RD" + C.IP)
                             If RD IsNot Nothing Then
                                 RD.Text = "RD" + C.IP + " " + _Size(b.LongLength)
-                                Dim MM = New IO.MemoryStream(System.Text.Encoding.Default.GetBytes(A(1)))
-                                Dim newImage As Image = Bitmap.FromStream(MM)
-                                RD.PictureBox1.Image = newImage
-                                Await MM.FlushAsync()
+                                Dim MM = New IO.MemoryStream(Text.Encoding.Default.GetBytes(A(1)))
+                                RD.PictureBox1.Image = Image.FromStream(MM)
                                 MM.Dispose()
+
+                                '///
 
                                 If RD.Button1.Text = "Capturing..." Then
 
@@ -64,9 +64,7 @@
                                         End Try
 
                                         Try
-                                            Await M.FlushAsync()
                                             M.Dispose()
-                                            S = Nothing
                                         Catch ex As Exception
                                         End Try
 
