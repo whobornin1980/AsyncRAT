@@ -14,8 +14,7 @@ Public Class ServerSocket
     Sub Start(ByVal Port As Integer)
         S = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
         Dim IpEndPoint As IPEndPoint = New IPEndPoint(IPAddress.Any, Port)
-        S.ReceiveBufferSize = 1024 * 100
-        S.SendBufferSize = 1024 * 100
+
         S.Bind(IpEndPoint)
         S.Listen(999)
 

@@ -33,7 +33,6 @@ Public Class ClientSocket
         Dim ipEndPoint As IPEndPoint = New IPEndPoint(ipAddress, 2020)
 
         S.ReceiveBufferSize = 1024 * 5000
-        S.SendBufferSize = S.ReceiveBufferSize
 
         Try
             'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.connect?view=netframework-4.0
@@ -70,7 +69,7 @@ Public Class ClientSocket
 
                     i = 0
                     'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.poll?view=netframework-4.0
-                    If S.Poll(0, 0) AndAlso S.Available = 0 OrElse Not S.Connected Then
+                    If S.Poll(0, SelectMode.SelectRead) AndAlso S.Available = 0 OrElse Not S.Connected Then
                         Exit While
                     End If
 
