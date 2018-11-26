@@ -27,7 +27,7 @@ Public Class ClientSocket
             MS = New MemoryStream
 
             S.ReceiveBufferSize = 1024 * 5000
-
+            S.SendBufferSize = 1024 * 5000
             S.Connect(ipEndPoint)
 
             isConnected = True

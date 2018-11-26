@@ -33,6 +33,7 @@ Public Class ClientSocket
         Dim ipEndPoint As IPEndPoint = New IPEndPoint(ipAddress, 2020)
 
         S.ReceiveBufferSize = 1024 * 5000
+        S.SendBufferSize = 1024 * 5000
 
         Try
             'https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.connect?view=netframework-4.0

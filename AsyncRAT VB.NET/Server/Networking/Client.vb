@@ -29,6 +29,7 @@ Public Class Client
     End Sub
 
     Async Sub BeginReceive(ByVal ar As IAsyncResult)
+        Await Task.Delay(1)
         If IsConnected = False Then isDisconnected()
 
         Try
