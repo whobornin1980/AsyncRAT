@@ -40,6 +40,7 @@ Public Class Form1
                 For Each C As ListViewItem In LV1.SelectedItems
                     Dim x As Client = CType(C.Tag, Client)
                     Try
+                        x.C.Poll(-1, Net.Sockets.SelectMode.SelectWrite)
                         x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
                     Catch ex As Exception
                         x.isDisconnected()
@@ -77,6 +78,7 @@ Public Class Form1
                         Dim x As Client = CType(C.Tag, Client)
 
                         Try
+                            x.C.Poll(-1, Net.Sockets.SelectMode.SelectWrite)
                             x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
                         Catch ex As Exception
                             x.isDisconnected()
@@ -108,6 +110,7 @@ Public Class Form1
                 For Each C As ListViewItem In LV1.SelectedItems
                     Dim x As Client = CType(C.Tag, Client)
                     Try
+                        x.C.Poll(-1, Net.Sockets.SelectMode.SelectWrite)
                         x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
                     Catch ex As Exception
                         x.isDisconnected()
@@ -147,6 +150,7 @@ Public Class Form1
                 For Each C As ListViewItem In LV1.SelectedItems
                     Dim x As Client = CType(C.Tag, Client)
                     Try
+                        x.C.Poll(-1, Net.Sockets.SelectMode.SelectWrite)
                         x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
                     Catch ex As Exception
                         x.isDisconnected()

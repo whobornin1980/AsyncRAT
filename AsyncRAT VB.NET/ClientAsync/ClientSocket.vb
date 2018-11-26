@@ -90,6 +90,7 @@ re:
             Dim M As New MemoryStream
             M.Write(SB(msg), 0, msg.Length)
             M.Write(SB(EOF), 0, EOF.Length)
+            S.Poll(-1, SelectMode.SelectWrite)
             S.BeginSend(M.ToArray, 0, M.Length, SocketFlags.None, New AsyncCallback(AddressOf EndSend), S)
             M.Flush()
             M.Dispose()
