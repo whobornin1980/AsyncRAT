@@ -6,7 +6,7 @@ Public Class Messages
 
     Public Shared Sub Read(ByVal b As Byte())
         Try
-            Dim A As String() = Split(BS(b).Replace(EOF, Nothing), SPL)
+            Dim A As String() = Split(BS(b), SPL)
             Select Case A(0)
 
                 Case "CLOSE"

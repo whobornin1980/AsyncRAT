@@ -5,7 +5,7 @@
 
     Public Shared Async Sub Read(ByVal C As Client, ByVal b() As Byte)
         Try
-            Dim A As String() = Split(BS(b).Replace(Settings.EOF, Nothing), Settings.SPL)
+            Dim A As String() = Split(BS(b), Settings.SPL)
             ' Console.WriteLine(BS(b))
             Select Case A(0)
 

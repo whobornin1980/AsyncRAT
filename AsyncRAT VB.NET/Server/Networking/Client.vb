@@ -29,21 +29,27 @@ Public Class Client
     End Sub
 
     Async Sub BeginReceive(ByVal ar As IAsyncResult)
-        Await Task.Delay(1)
         If IsConnected = False Then isDisconnected()
-
         Try
             Dim Received As Integer = C.EndReceive(ar)
             If Received > 0 Then
                 Await MS.WriteAsync(Buffer, 0, Received)
-
+re:
                 If BS(MS.ToArray).Contains(Settings.EOF) Then
-                    RaiseEvent Read(Me, MS.ToArray)
+                    Dim A As Array = Await fx(MS.ToArray, Settings.EOF)
+                    RaiseEvent Read(Me, A(0))
                     Await MS.FlushAsync
                     MS.Dispose()
                     MS = New MemoryStream
-                End If
 
+                    If A.Length = 2 Then
+                        MS.Write(A(1), 0, A(1).length)
+                        GoTo re
+                    End If
+
+                End If
+            Else
+                isDisconnected()
             End If
             C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
         Catch ex As Exception
@@ -90,5 +96,20 @@ Public Class Client
         Catch ex As Exception
         End Try
     End Sub
+
+    'Credit to njq8 / better wat to split
+    Async Function fx(ByVal b As Byte(), ByVal Word As String) As Threading.Tasks.Task(Of Array)
+        Dim a As New Collections.Generic.List(Of Byte())
+        Dim M As New MemoryStream
+        Dim MM As New MemoryStream
+        Dim T As String() = Split(BS(b), Word)
+        Await M.WriteAsync(b, 0, T(0).Length)
+        Await MM.WriteAsync(b, T(0).Length + Word.Length, b.Length - (T(0).Length + Word.Length))
+        a.Add(M.ToArray)
+        a.Add(MM.ToArray)
+        M.Dispose()
+        MM.Dispose()
+        Return a.ToArray
+    End Function
 
 End Class

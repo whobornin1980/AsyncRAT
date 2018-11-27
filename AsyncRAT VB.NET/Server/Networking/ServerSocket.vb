@@ -11,7 +11,7 @@ Imports System.Net
 Public Class ServerSocket
     Public S As Socket
 
-    Sub Start(ByVal Port As Integer)
+    Async Sub Start(ByVal Port As Integer)
         S = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
         Dim IpEndPoint As IPEndPoint = New IPEndPoint(IPAddress.Any, Port)
 
@@ -20,15 +20,13 @@ Public Class ServerSocket
         S.Bind(IpEndPoint)
         S.Listen(999)
 
-        Dim T As New Threading.Thread(AddressOf BegingAccpet) : T.Start()
-    End Sub
-
-    Async Sub BegingAccpet()
         While True
             S.BeginAccept(New AsyncCallback(AddressOf EndAccept), S)
             Await Task.Delay(1)
         End While
+
     End Sub
+
 
     Sub EndAccept(ByVal ar As IAsyncResult)
         Try
