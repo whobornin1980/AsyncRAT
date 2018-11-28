@@ -20,7 +20,7 @@ Public Class Form1
 
         Try
             S.Start(Settings.PORT)
-            AddHandler Client.Read, AddressOf Messages.Read
+            'AddHandler Client.Read, AddressOf Messages.Read
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try

@@ -16,7 +16,7 @@ Public Class Client
     Public IP As String = Nothing
     Public Buffer(1024 * 100) As Byte
     Public MS As MemoryStream = Nothing
-    Public Shared Event Read(ByVal C As Client, ByVal b() As Byte)
+    ' Public Shared Event Read(ByVal C As Client, ByVal b() As Byte)
 
     Sub New(ByVal CL As Socket)
         Me.C = CL
@@ -37,7 +37,8 @@ Public Class Client
 re:
                 If BS(MS.ToArray).Contains(Settings.EOF) Then
                     Dim A As Array = Await fx(MS.ToArray, Settings.EOF)
-                    RaiseEvent Read(Me, A(0))
+                    '  RaiseEvent Read(Me, A(0))
+                    Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(Sub() Messages.Read(Me, A(0))))
                     Await MS.FlushAsync
                     MS.Dispose()
                     MS = New MemoryStream

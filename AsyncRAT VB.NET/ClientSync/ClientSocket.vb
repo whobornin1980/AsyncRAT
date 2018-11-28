@@ -97,7 +97,7 @@ re:
                         Diagnostics.Debug.WriteLine("Data = " + BS(MS.ToArray))
 
                         Dim A As Array = SplitWord(MS.ToArray, EOF)
-                        Dim T As New Threading.Thread(AddressOf Messages.Read)
+                        Dim T As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf Messages.Read))
                         T.Start(A(0))
 
                         MS.Flush()
