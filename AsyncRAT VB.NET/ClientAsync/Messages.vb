@@ -2,7 +2,6 @@
 
 Public Class Messages
     Private Shared SPL = ClientSocket.SPL
-    Private Shared EOF = ClientSocket.EOF
 
     Public Shared Sub Read(ByVal b As Byte())
         Try

