@@ -35,12 +35,12 @@ Partial Class Form1
         Me.CLIENTToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CLOSEToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UPDATEToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Timer_Ping = New System.Windows.Forms.Timer(Me.components)
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Timer_Status = New System.Windows.Forms.Timer(Me.components)
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClientMenu.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -89,25 +89,25 @@ Partial Class Form1
         Me.ClientMenu.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.ClientMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DownloadAndExecuteToolStripMenuItem, Me.RemoteDesktopToolStripMenuItem, Me.CLIENTToolStripMenuItem, Me.ToolStripSeparator1, Me.AboutToolStripMenuItem})
         Me.ClientMenu.Name = "ClientMenu"
-        Me.ClientMenu.Size = New System.Drawing.Size(241, 147)
+        Me.ClientMenu.Size = New System.Drawing.Size(224, 114)
         '
         'DownloadAndExecuteToolStripMenuItem
         '
         Me.DownloadAndExecuteToolStripMenuItem.Name = "DownloadAndExecuteToolStripMenuItem"
-        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
         Me.DownloadAndExecuteToolStripMenuItem.Text = "UPLOAD FILE"
         '
         'RemoteDesktopToolStripMenuItem
         '
         Me.RemoteDesktopToolStripMenuItem.Name = "RemoteDesktopToolStripMenuItem"
-        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
         Me.RemoteDesktopToolStripMenuItem.Text = "REMOTE DESKTOP"
         '
         'CLIENTToolStripMenuItem
         '
         Me.CLIENTToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CLOSEToolStripMenuItem, Me.UPDATEToolStripMenuItem})
         Me.CLIENTToolStripMenuItem.Name = "CLIENTToolStripMenuItem"
-        Me.CLIENTToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.CLIENTToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
         Me.CLIENTToolStripMenuItem.Text = "CLIENT"
         '
         'CLOSEToolStripMenuItem
@@ -121,6 +121,17 @@ Partial Class Form1
         Me.UPDATEToolStripMenuItem.Name = "UPDATEToolStripMenuItem"
         Me.UPDATEToolStripMenuItem.Size = New System.Drawing.Size(155, 30)
         Me.UPDATEToolStripMenuItem.Text = "UPDATE"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(220, 6)
+        '
+        'AboutToolStripMenuItem
+        '
+        Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
+        Me.AboutToolStripMenuItem.Text = "About"
         '
         'Timer_Ping
         '
@@ -147,17 +158,6 @@ Partial Class Form1
         '
         Me.Timer_Status.Enabled = True
         Me.Timer_Status.Interval = 1000
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(237, 6)
-        '
-        'AboutToolStripMenuItem
-        '
-        Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
-        Me.AboutToolStripMenuItem.Text = "About"
         '
         'Form1
         '

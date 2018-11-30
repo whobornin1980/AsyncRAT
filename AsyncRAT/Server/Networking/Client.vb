@@ -130,11 +130,6 @@ Public Class Client
         Catch ex As Exception
         End Try
 
-        Try
-            Buffer = Nothing
-        Catch ex As Exception
-        End Try
-
     End Sub
 
 End Class

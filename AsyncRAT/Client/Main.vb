@@ -12,10 +12,11 @@
     '
 
     Public Shared Sub Main()
-        Dim T1 As New Threading.Thread(AddressOf ClientSocket.BeginConnect)
+
+        Dim T1 As New Threading.Thread(New Threading.ThreadStart(AddressOf ClientSocket.BeginConnect))
         T1.Start()
 
-        Dim T2 As New Threading.Thread(AddressOf ClientSocket.Ping)
+        Dim T2 As New Threading.Thread(New Threading.ThreadStart(AddressOf ClientSocket.Ping))
         T2.Start()
 
     End Sub
