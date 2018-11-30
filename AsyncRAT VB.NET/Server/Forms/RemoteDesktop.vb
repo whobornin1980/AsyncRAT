@@ -5,11 +5,17 @@ Public Class RemoteDesktop
     Public C As Client
 
     Private Sub RemoteDesktop_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Button1.Text = "OFF"
+        Try
+            Button1.PerformClick()
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub RemoteDesktop_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-        Button1.Text = "OFF"
+        Try
+            Button1.Text = "OFF"
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -19,7 +25,8 @@ Public Class RemoteDesktop
 
                 Dim B As Byte() = SB("RD+" + Settings.SPL + PictureBox1.Width.ToString + Settings.SPL + PictureBox1.Height.ToString)
                 Try
-                    C.Send(B)
+                    Dim ClientReq As New Outcoming_Requests(C, B)
+                    Pending.Req_Out.Add(ClientReq)
                 Catch ex As Exception
                     C.isDisconnected()
                 End Try

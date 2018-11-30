@@ -6,7 +6,7 @@ Imports System.Net
 
 '       Contact Me   : https://github.com/NYAN-x-CAT
 
-'       This program Is distributed for educational purposes only.
+'       This program is distributed for educational purposes only.
 
 Public Class ServerSocket
     Public S As Socket

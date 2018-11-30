@@ -6,7 +6,7 @@ Imports System.Net.Sockets
 
 '       Contact Me   : https://github.com/NYAN-x-CAT
 
-'       This program Is distributed for educational purposes only.
+'       This program is distributed for educational purposes only.
 
 Public Class Client
 
@@ -31,6 +31,9 @@ Public Class Client
         C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
     End Sub
 
+    'reading everybyte from the stream until we read vbNullChar
+    'we write it ot our memorystream, now ms = buffer size
+    'now we know the buffer size.
     Async Sub BeginReceive(ByVal ar As IAsyncResult)
         If IsConnected = False Then isDisconnected()
         Try
@@ -45,6 +48,7 @@ Public Class Client
                         If BufferLength = 0 Then
                             BufferLength = -1
                             C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
+                            Exit Sub
                         End If
                         Buffer = New Byte(BufferLength - 1) {}
                     Else
@@ -55,7 +59,6 @@ Public Class Client
                     If (MS.Length = BufferLength) Then
                         Dim ClientReq As New Incoming_Requests(Me, MS.ToArray)
                         Pending.Req_In.Add(ClientReq)
-                        'Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(AddressOf BeginRead), MS.ToArray)
                         BufferLength = -1
                         MS.Dispose()
                         MS = New MemoryStream

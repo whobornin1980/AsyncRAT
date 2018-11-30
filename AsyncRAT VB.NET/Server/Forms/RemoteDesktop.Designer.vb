@@ -34,7 +34,7 @@ Partial Class RemoteDesktop
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(800, 31)
         Me.Button1.TabIndex = 1
-        Me.Button1.Text = " OFF"
+        Me.Button1.Text = "OFF"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'PictureBox1

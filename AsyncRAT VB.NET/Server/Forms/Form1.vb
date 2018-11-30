@@ -8,7 +8,7 @@ Imports System.IO
 
 '       Contact Me   : https://github.com/NYAN-x-CAT
 
-'       This program Is distributed for educational purposes only.
+'       This program is distributed for educational purposes only.
 
 '
 
@@ -19,8 +19,7 @@ Public Class Form1
         Messages.F = Me
 
         Try
-            S.Start(Settings.PORT)
-            'AddHandler Client.Read, AddressOf Messages.Read
+            S.Start(Settings.PORT) 'For handling multi clients [300+] you need to use multi port.
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
@@ -160,4 +159,18 @@ Public Class Form1
         End Try
     End Sub
 
+    Private Sub AboutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AboutToolStripMenuItem.Click
+        MsgBox("
+
+
+       │ Author     : NYAN CAT
+       │ Name       : AsyncRAT
+
+       │ Contact Me   : https://github.com/NYAN-x-CAT
+
+       │ This program Is distributed for educational purposes only.
+
+
+")
+    End Sub
 End Class

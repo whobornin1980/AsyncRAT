@@ -1,4 +1,13 @@
-﻿Public Class Incoming_Requests
+﻿
+'       │ Author     : NYAN CAT
+'       │ Name       : Task scheduler // For low end cpu
+
+'       Contact Me   : https://github.com/NYAN-x-CAT
+
+'       This program is distributed for educational purposes only.
+
+
+Public Class Incoming_Requests
     Public C As Client
     Public B As Byte()
 
