@@ -3,7 +3,7 @@
     Public Shared F As Form1
     Delegate Sub _Read(ByVal C As Client, ByVal b() As Byte)
 
-    Public Shared Async Sub Read(ByVal C As Client, ByVal b() As Byte)
+    Public Shared Sub Read(ByVal C As Client, ByVal b() As Byte)
         Try
             Dim A As String() = Split(BS(b), Settings.SPL)
             Select Case A(0)

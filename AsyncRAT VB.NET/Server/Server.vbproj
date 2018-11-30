@@ -86,7 +86,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Helper.vb" />
-    <Compile Include="Messages.vb" />
+    <Compile Include="Packet\Messages.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -103,7 +103,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Networking\ServerSocket.vb" />
-    <Compile Include="Requests.vb" />
+    <Compile Include="Packet\Requests.vb" />
     <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>

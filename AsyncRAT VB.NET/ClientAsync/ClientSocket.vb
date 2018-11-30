@@ -25,7 +25,7 @@ Public Class ClientSocket
             S = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
 
             Dim ipAddress As IPAddress = IPAddress.Parse("127.0.0.1")
-            Dim ipEndPoint As IPEndPoint = New IPEndPoint(ipAddress, 8989)
+            Dim ipEndPoint As IPEndPoint = New IPEndPoint(ipAddress, 2020)
 
             BufferLength = -1
             Buffer = New Byte(0) {}
