@@ -10,23 +10,25 @@ Imports System.Net
 
 Public Class ServerSocket
     Public S As Socket
-
     Async Sub Start(ByVal Port As Integer)
         S = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
         Dim IpEndPoint As IPEndPoint = New IPEndPoint(IPAddress.Any, Port)
 
-        S.ReceiveBufferSize = 1024 * 5000
-        S.SendBufferSize = 1024 * 5000
+        S.ReceiveBufferSize = 1024 * 500
+        S.SendBufferSize = 1024 * 500
         S.Bind(IpEndPoint)
         S.Listen(999)
 
+        Pending.Req = New List(Of Requests)
+        Dim T1 As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf Pending.Pen))
+        T1.Start()
+
         While True
-            S.BeginAccept(New AsyncCallback(AddressOf EndAccept), S)
             Await Task.Delay(1)
+            S.BeginAccept(New AsyncCallback(AddressOf EndAccept), S)
         End While
 
     End Sub
-
 
     Sub EndAccept(ByVal ar As IAsyncResult)
         Try
@@ -34,6 +36,5 @@ Public Class ServerSocket
         Catch ex As Exception
         End Try
     End Sub
-
 
 End Class

@@ -20,6 +20,8 @@ Public Class Client
 
     Sub New(ByVal CL As Socket)
         C = CL
+        C.ReceiveBufferSize = 1024 * 500
+        C.SendBufferSize = 1024 * 500
         IsConnected = True
         BufferLength = -1
         Buffer = New Byte(0) {}
@@ -51,7 +53,9 @@ Public Class Client
                 Else
                     Await MS.WriteAsync(Buffer, 0, Received)
                     If (MS.Length = BufferLength) Then
-                        Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(AddressOf BeginRead), MS.ToArray)
+                        Dim ClientReq As New Requests(Me, MS.ToArray)
+                        Pending.Req.Add(ClientReq)
+                        'Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(AddressOf BeginRead), MS.ToArray)
                         BufferLength = -1
                         MS.Dispose()
                         MS = New MemoryStream
@@ -60,17 +64,12 @@ Public Class Client
                         Buffer = New Byte(BufferLength - MS.Length - 1) {}
                     End If
                 End If
+            Else
+                isDisconnected()
             End If
             C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
         Catch ex As Exception
             isDisconnected()
-        End Try
-    End Sub
-
-    Sub BeginRead(ByVal b As Byte())
-        Try
-            Messages.Read(Me, b)
-        Catch ex As Exception
         End Try
     End Sub
 

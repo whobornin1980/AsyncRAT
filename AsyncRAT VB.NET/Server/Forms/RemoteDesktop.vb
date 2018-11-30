@@ -9,7 +9,7 @@ Public Class RemoteDesktop
     End Sub
 
     Private Sub RemoteDesktop_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-
+        Button1.Text = "OFF"
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click

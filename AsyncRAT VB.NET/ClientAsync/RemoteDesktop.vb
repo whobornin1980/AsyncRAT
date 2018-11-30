@@ -30,6 +30,8 @@ Public Class RemoteDesktop
         Dim MS As New IO.MemoryStream
         Temp.Save(MS, encoderInfo, encoderParameters)
 
+        ClientSocket.Send("RD+" + ClientSocket.SPL + BS(MS.ToArray))
+
         Try
             g.Dispose()
             G2.Dispose()
@@ -37,7 +39,6 @@ Public Class RemoteDesktop
         Catch ex As Exception
         End Try
 
-        ClientSocket.Send("RD+" + ClientSocket.SPL + BS(MS.GetBuffer))
 
         Try
             MS.Dispose()

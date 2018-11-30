@@ -30,13 +30,15 @@ Partial Class Form1
         Me._OS = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me._VER = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ClientMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.CloseClientToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DownloadAndExecuteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RemoteDesktopToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Timer_Ping = New System.Windows.Forms.Timer(Me.components)
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Timer_Status = New System.Windows.Forms.Timer(Me.components)
+        Me.CLIENTToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CLOSEToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UPDATEToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClientMenu.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -50,7 +52,7 @@ Partial Class Form1
         Me.LV1.GridLines = True
         Me.LV1.Location = New System.Drawing.Point(0, 0)
         Me.LV1.Name = "LV1"
-        Me.LV1.Size = New System.Drawing.Size(931, 314)
+        Me.LV1.Size = New System.Drawing.Size(943, 340)
         Me.LV1.TabIndex = 0
         Me.LV1.UseCompatibleStateImageBehavior = False
         Me.LV1.View = System.Windows.Forms.View.Details
@@ -83,27 +85,21 @@ Partial Class Form1
         'ClientMenu
         '
         Me.ClientMenu.ImageScalingSize = New System.Drawing.Size(24, 24)
-        Me.ClientMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CloseClientToolStripMenuItem, Me.DownloadAndExecuteToolStripMenuItem, Me.RemoteDesktopToolStripMenuItem})
+        Me.ClientMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DownloadAndExecuteToolStripMenuItem, Me.RemoteDesktopToolStripMenuItem, Me.CLIENTToolStripMenuItem})
         Me.ClientMenu.Name = "ClientMenu"
-        Me.ClientMenu.Size = New System.Drawing.Size(282, 94)
-        '
-        'CloseClientToolStripMenuItem
-        '
-        Me.CloseClientToolStripMenuItem.Name = "CloseClientToolStripMenuItem"
-        Me.CloseClientToolStripMenuItem.Size = New System.Drawing.Size(281, 30)
-        Me.CloseClientToolStripMenuItem.Text = "Close Client"
+        Me.ClientMenu.Size = New System.Drawing.Size(241, 115)
         '
         'DownloadAndExecuteToolStripMenuItem
         '
         Me.DownloadAndExecuteToolStripMenuItem.Name = "DownloadAndExecuteToolStripMenuItem"
-        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(281, 30)
-        Me.DownloadAndExecuteToolStripMenuItem.Text = "Download And Execute"
+        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.DownloadAndExecuteToolStripMenuItem.Text = "UPLOAD FILE"
         '
         'RemoteDesktopToolStripMenuItem
         '
         Me.RemoteDesktopToolStripMenuItem.Name = "RemoteDesktopToolStripMenuItem"
-        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(281, 30)
-        Me.RemoteDesktopToolStripMenuItem.Text = "Remote Desktop"
+        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.RemoteDesktopToolStripMenuItem.Text = "REMOTE DESKTOP"
         '
         'Timer_Ping
         '
@@ -114,16 +110,16 @@ Partial Class Form1
         '
         Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 284)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 314)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(931, 30)
+        Me.StatusStrip1.Size = New System.Drawing.Size(943, 26)
         Me.StatusStrip1.TabIndex = 1
         Me.StatusStrip1.Text = "StatusStrip1"
         '
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(20, 25)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(20, 21)
         Me.ToolStripStatusLabel1.Text = ".."
         '
         'Timer_Status
@@ -131,11 +127,30 @@ Partial Class Form1
         Me.Timer_Status.Enabled = True
         Me.Timer_Status.Interval = 1000
         '
+        'CLIENTToolStripMenuItem
+        '
+        Me.CLIENTToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CLOSEToolStripMenuItem, Me.UPDATEToolStripMenuItem})
+        Me.CLIENTToolStripMenuItem.Name = "CLIENTToolStripMenuItem"
+        Me.CLIENTToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.CLIENTToolStripMenuItem.Text = "CLIENT"
+        '
+        'CLOSEToolStripMenuItem
+        '
+        Me.CLOSEToolStripMenuItem.Name = "CLOSEToolStripMenuItem"
+        Me.CLOSEToolStripMenuItem.Size = New System.Drawing.Size(252, 30)
+        Me.CLOSEToolStripMenuItem.Text = "CLOSE"
+        '
+        'UPDATEToolStripMenuItem
+        '
+        Me.UPDATEToolStripMenuItem.Name = "UPDATEToolStripMenuItem"
+        Me.UPDATEToolStripMenuItem.Size = New System.Drawing.Size(252, 30)
+        Me.UPDATEToolStripMenuItem.Text = "UPDATE"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(931, 314)
+        Me.ClientSize = New System.Drawing.Size(943, 340)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.LV1)
         Me.MinimumSize = New System.Drawing.Size(953, 378)
@@ -155,7 +170,6 @@ Partial Class Form1
     Friend WithEvents _Username As ColumnHeader
     Friend WithEvents _OS As ColumnHeader
     Friend WithEvents ClientMenu As ContextMenuStrip
-    Friend WithEvents CloseClientToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DownloadAndExecuteToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Timer_Ping As Timer
     Friend WithEvents RemoteDesktopToolStripMenuItem As ToolStripMenuItem
@@ -164,4 +178,7 @@ Partial Class Form1
     Friend WithEvents Timer_Status As Timer
     Friend WithEvents _VER As ColumnHeader
     Friend WithEvents _ID As ColumnHeader
+    Friend WithEvents CLIENTToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CLOSEToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UPDATEToolStripMenuItem As ToolStripMenuItem
 End Class
