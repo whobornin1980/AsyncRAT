@@ -29,8 +29,6 @@ Public Class Form1
         For Each i In Settings.Ports.ToList
             S = New Server
             S.Start(i)
-            'Dim SK As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf S.Start))
-            'SK.Start(i)
         Next
 
     End Sub
@@ -174,7 +172,7 @@ Public Class Form1
 
        │ Contact Me   : https://github.com/NYAN-x-CAT
 
-       │ This program Is distributed for educational purposes only.
+       │ This program is distributed for educational purposes only.
 
 
 ")
