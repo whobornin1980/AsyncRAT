@@ -11,6 +11,15 @@ Imports System.Net
 Public Class ServerSocket
     Public S As Socket
     Async Sub Start(ByVal Port As Integer)
+
+        Pending.Req_In = New List(Of Incoming_Requests)
+        Dim T1 As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf Pending.Incoming))
+        T1.Start()
+
+        Pending.Req_Out = New List(Of Outcoming_Requests)
+        Dim T2 As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf Pending.OutComing))
+        T2.Start()
+
         S = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
         Dim IpEndPoint As IPEndPoint = New IPEndPoint(IPAddress.Any, Port)
 
@@ -18,10 +27,6 @@ Public Class ServerSocket
         S.SendBufferSize = 1024 * 500
         S.Bind(IpEndPoint)
         S.Listen(999)
-
-        Pending.Req = New List(Of Requests)
-        Dim T1 As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf Pending.Pen))
-        T1.Start()
 
         While True
             Await Task.Delay(1)

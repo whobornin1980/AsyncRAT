@@ -53,8 +53,8 @@ Public Class Client
                 Else
                     Await MS.WriteAsync(Buffer, 0, Received)
                     If (MS.Length = BufferLength) Then
-                        Dim ClientReq As New Requests(Me, MS.ToArray)
-                        Pending.Req.Add(ClientReq)
+                        Dim ClientReq As New Incoming_Requests(Me, MS.ToArray)
+                        Pending.Req_In.Add(ClientReq)
                         'Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(AddressOf BeginRead), MS.ToArray)
                         BufferLength = -1
                         MS.Dispose()
