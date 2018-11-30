@@ -31,9 +31,6 @@ Public Class Client
         C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
     End Sub
 
-    'reading everybyte from the stream until we read vbNullChar
-    'we write it ot our memorystream, now ms = buffer size
-    'now we know the buffer size.
     Async Sub BeginReceive(ByVal ar As IAsyncResult)
         If IsConnected = False Then isDisconnected()
         Try
@@ -82,16 +79,14 @@ Public Class Client
 
     Async Sub BeginSend(ByVal b As Byte())
         Try
-            Dim MS As New MemoryStream
-            Dim L As Byte() = SB(b.Length & CChar(vbNullChar))
-            Await MS.WriteAsync(L, 0, L.Length)
-            Await MS.WriteAsync(b, 0, b.Length)
+            Using MS As New MemoryStream
+                Dim L As Byte() = SB(b.Length & CChar(vbNullChar))
+                Await MS.WriteAsync(L, 0, L.Length)
+                Await MS.WriteAsync(b, 0, b.Length)
 
-            C.Poll(-1, SelectMode.SelectWrite)
-            C.Send(MS.ToArray, 0, MS.Length, SocketFlags.None)
-
-            Await MS.FlushAsync
-            MS.Dispose()
+                C.Poll(-1, SelectMode.SelectWrite)
+                C.Send(MS.ToArray, 0, MS.Length, SocketFlags.None)
+            End Using
         Catch ex As Exception
             isDisconnected()
         End Try

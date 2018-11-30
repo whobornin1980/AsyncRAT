@@ -102,18 +102,16 @@ Public Class ClientSocket
 
     Public Shared Sub Send(ByVal msg As String)
         Try
-            Dim MS As New MemoryStream
-            Dim B As Byte() = SB(msg)
-            Dim L As Byte() = SB(B.Length & CChar(vbNullChar))
+            Using MS As New MemoryStream
+                Dim B As Byte() = SB(msg)
+                Dim L As Byte() = SB(B.Length & CChar(vbNullChar))
 
-            MS.Write(L, 0, L.Length)
-            MS.Write(B, 0, B.Length)
+                MS.Write(L, 0, L.Length)
+                MS.Write(B, 0, B.Length)
 
-            S.Poll(-1, SelectMode.SelectWrite)
-            S.Send(MS.ToArray, 0, MS.Length, SocketFlags.None)
-
-            MS.Flush()
-            MS.Dispose()
+                S.Poll(-1, SelectMode.SelectWrite)
+                S.Send(MS.ToArray, 0, MS.Length, SocketFlags.None)
+            End Using
         Catch ex As Exception
             isDisconnected()
         End Try
@@ -155,18 +153,16 @@ Public Class ClientSocket
             Threading.Thread.Sleep(30 * 1000)
             Try
                 If S.Connected Then
-                    Dim MS As New MemoryStream
-                    Dim B As Byte() = SB("PING?")
-                    Dim L As Byte() = SB(B.Length & CChar(vbNullChar))
+                    Using MS As New MemoryStream
+                        Dim B As Byte() = SB("PING?")
+                        Dim L As Byte() = SB(B.Length & CChar(vbNullChar))
 
-                    MS.Write(L, 0, L.Length)
-                    MS.Write(B, 0, B.Length)
+                        MS.Write(L, 0, L.Length)
+                        MS.Write(B, 0, B.Length)
 
-                    S.Poll(-1, SelectMode.SelectWrite)
-                    S.Send(MS.ToArray, 0, MS.Length, SocketFlags.None)
-
-                    MS.Flush()
-                    MS.Dispose()
+                        S.Poll(-1, SelectMode.SelectWrite)
+                        S.Send(MS.ToArray, 0, MS.Length, SocketFlags.None)
+                    End Using
                 End If
             Catch ex As Exception
                 isConnected = False
