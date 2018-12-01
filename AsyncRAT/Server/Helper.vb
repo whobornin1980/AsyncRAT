@@ -34,10 +34,10 @@
 
     Function AES_Encryptor(ByVal input As Byte()) As Byte()
         Dim AES As New Security.Cryptography.RijndaelManaged
-        Dim SHA256 As New Security.Cryptography.SHA256Cng
+        Dim Hash As New Security.Cryptography.MD5CryptoServiceProvider
         Dim ciphertext As String = ""
         Try
-            AES.Key = SHA256.ComputeHash(SB(Settings.KEY))
+            AES.Key = Hash.ComputeHash(SB(Settings.KEY))
             AES.Mode = Security.Cryptography.CipherMode.ECB
             Dim DESEncrypter As Security.Cryptography.ICryptoTransform = AES.CreateEncryptor
             Dim Buffer As Byte() = input
@@ -49,9 +49,9 @@
 
     Function AES_Decryptor(ByVal input As Byte(), Optional C As Client = Nothing) As Byte()
         Dim AES As New Security.Cryptography.RijndaelManaged
-        Dim SHA256 As New Security.Cryptography.SHA256Cng
+        Dim Hash As New Security.Cryptography.MD5CryptoServiceProvider
         Try
-            AES.Key = SHA256.ComputeHash(SB(Settings.KEY))
+            AES.Key = Hash.ComputeHash(SB(Settings.KEY))
             AES.Mode = Security.Cryptography.CipherMode.ECB
             Dim DESDecrypter As Security.Cryptography.ICryptoTransform = AES.CreateDecryptor
             Dim Buffer As Byte() = input
@@ -64,6 +64,17 @@
             End If
         End Try
         Return Nothing
+    End Function
+
+    Public rand As New Random()
+    Function Randomi(ByVal lenght As Integer) As String
+        Dim Chr As String = "顾氏家族的成泽是顾商城公司的首席执行官顾太太希望她的生物孙"
+        Dim sb As New Text.StringBuilder()
+        For i As Integer = 1 To lenght
+            Dim idx As Integer = rand.Next(0, Chr.Length)
+            sb.Append(Chr.Substring(idx, 1))
+        Next
+        Return sb.ToString
     End Function
 
 End Module

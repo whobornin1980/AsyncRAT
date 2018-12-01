@@ -39,7 +39,7 @@ Namespace My.Resources
         Friend ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
-                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("Server.Resources", GetType(Resources).Assembly)
+                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("Client.Resources", GetType(Resources).Assembly)
                     resourceMan = temp
                 End If
                 Return resourceMan
@@ -58,34 +58,6 @@ Namespace My.Resources
             Set
                 resourceCulture = value
             End Set
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Imports System.Security.Cryptography
-        '''Imports Microsoft.Win32
-        '''Imports System.Management
-        '''Imports System
-        '''Imports System.Net.Sockets
-        '''Imports Microsoft.VisualBasic
-        '''Imports System.Diagnostics
-        '''Imports System.Reflection
-        '''Imports System.Runtime.InteropServices
-        '''Imports System.Collections.Generic
-        '''Imports System.Drawing
-        '''Imports System.Windows.Forms
-        '''Imports System.IO
-        '''Imports System.Net
-        '''Imports System.Drawing.Drawing2D
-        '''Imports System.Drawing.Imaging
-        '''
-        '''&apos;%ASSEMBLY%&lt;Assembly: Guid(&quot;%Guid%&quot;)&gt;
-        '''
-        '''Namespace Stub [rest of string was truncated]&quot;;.
-        '''</summary>
-        Friend ReadOnly Property Stub() As String
-            Get
-                Return ResourceManager.GetString("Stub", resourceCulture)
-            End Get
         End Property
     End Module
 End Namespace
