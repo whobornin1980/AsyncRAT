@@ -127,14 +127,11 @@ Public Class Client
                 Messages.F.Invoke(New _isDisconnected(AddressOf isDisconnected))
                 Exit Sub
             Else
-                If L IsNot Nothing Then
-                    L.Remove()
-                End If
+                L.Remove()
             End If
         Catch ex As Exception
             Debug.WriteLine("L.Remove " + ex.Message)
         End Try
-
 
         Try
             C.Close()

@@ -35,8 +35,8 @@ Public Class Pending
     Public Shared Req_In As List(Of Incoming_Requests)
     Public Shared Sub Incoming()
         While True
+            Threading.Thread.Sleep(1)
             Try
-                Threading.Thread.Sleep(1)
                 Dim ClientReq As Incoming_Requests = Nothing
                 If Req_In.Count > 0 Then
                     ClientReq = Req_In.Item(0)
@@ -51,8 +51,8 @@ Public Class Pending
     Public Shared Req_Out As List(Of Outcoming_Requests)
     Public Shared Sub OutComing()
         While True
+            Threading.Thread.Sleep(1)
             Try
-                Threading.Thread.Sleep(1)
                 Dim ClientReq As Outcoming_Requests = Nothing
                 If Req_Out.Count > 0 Then
                     ClientReq = Req_Out.Item(0)

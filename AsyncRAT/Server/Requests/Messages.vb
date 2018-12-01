@@ -16,6 +16,7 @@
                         For i As Integer = 1 To A.Length - 1
                             C.L.SubItems.Add(A(i))
                         Next
+                        C.L.SubItems.Add(0)
                         F.LV1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
                     End If
                     Exit Sub
@@ -39,7 +40,7 @@
                         Dim RD As RemoteDesktop = My.Application.OpenForms("RD" + C.IP)
                         If RD IsNot Nothing Then
 
-                            RD.Text = "RD" + C.IP + " " + _Size(b.LongLength)
+                            RD.Text = " Remote Desktop " + C.IP.Split(":")(0) + " [" + _Size(b.LongLength) + "]"
                             Dim MM = New IO.MemoryStream(Text.Encoding.Default.GetBytes(A(1)))
                             RD.PictureBox1.Image = Image.FromStream(MM)
                             MM.Dispose()
@@ -62,5 +63,6 @@
             Debug.WriteLine("Messages" + ex.Message)
         End Try
     End Sub
+
 
 End Class

@@ -45,6 +45,9 @@
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -77,6 +80,12 @@
     <Compile Include="Forms\RemoteDesktop.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\TaskForm.Designer.vb">
+      <DependentUpon>TaskForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TaskForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Networking\Client.vb" />
     <Compile Include="Forms\Form1.vb">
       <SubType>Form</SubType>
@@ -86,7 +95,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Helper.vb" />
-    <Compile Include="Packet\Messages.vb" />
+    <Compile Include="Requests\Messages.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -103,7 +112,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Networking\Server.vb" />
-    <Compile Include="Packet\Requests.vb" />
+    <Compile Include="Requests\Scheduler.vb" />
+    <Compile Include="Requests\TaskWorker.vb" />
     <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +122,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RemoteDesktop.resx">
       <DependentUpon>RemoteDesktop.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TaskForm.resx">
+      <DependentUpon>TaskForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -131,6 +144,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
