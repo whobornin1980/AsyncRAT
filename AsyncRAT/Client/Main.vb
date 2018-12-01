@@ -10,7 +10,6 @@
     '       This program Is distributed for educational purposes only.
 
     '
-
     Public Shared Sub Main()
 
         Dim T1 As New Threading.Thread(New Threading.ThreadStart(AddressOf ClientSocket.BeginConnect))

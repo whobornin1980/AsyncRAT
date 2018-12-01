@@ -1,9 +1,24 @@
-<img src="https://i.imgur.com/RhX9M7r.png">
+<img src="https://i.imgur.com/XGTKENt.png">
 
 
 # AsyncRAT
 	
 ***Remote Administration Tool For Windows***
+ ```
+This project is for learing, If you find any bug or a better way to write please contact me
+Still not ready for an official release.
+ ```
+
+---
+
+
+## Socket Features
+
+- **Asynchronous**
+- **Multi-Ports**
+- **Multi-Clients**
+- **Buffered**
+- **Encrypted**
 
 
 ---

@@ -10,9 +10,13 @@ Imports System.Net
 
 Public Class Server
     Public S As Socket
+    Public Blocked As List(Of String)
+    Public allDone As New Threading.ManualResetEvent(False)
 
-    Async Sub Start(ByVal Port As Integer)
+    Sub Start(ByVal Port As Integer)
         Try
+            Blocked = New List(Of String)
+
             S = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             Dim IpEndPoint As IPEndPoint = New IPEndPoint(IPAddress.Any, Port)
 
@@ -22,9 +26,9 @@ Public Class Server
             S.Listen(999)
 
             While True
-                Threading.Thread.Sleep(1)
-                'Await Task.Delay(1)
+                allDone.Reset()
                 S.BeginAccept(New AsyncCallback(AddressOf EndAccept), S)
+                allDone.WaitOne()
             End While
         Catch ex As Exception
             MsgBox(ex.Message)
@@ -34,8 +38,10 @@ Public Class Server
 
     Sub EndAccept(ByVal ar As IAsyncResult)
         Try
-            Dim C As New Client(S.EndAccept(ar))
+            Dim C As Client = New Client(S.EndAccept(ar), Me)
+            allDone.Set()
         Catch ex As Exception
+            Debug.WriteLine("EndAccept " + ex.Message)
         End Try
     End Sub
 

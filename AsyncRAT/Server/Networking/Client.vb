@@ -11,6 +11,7 @@ Imports System.Net.Sockets
 Public Class Client
 
     Public C As Socket = Nothing
+    Public S As Server = Nothing
     Public IsConnected As Boolean = False
     Public BufferLength As Long = Nothing
     Public Buffer() As Byte = Nothing
@@ -18,8 +19,10 @@ Public Class Client
     Public IP As String = Nothing
     Public L As ListViewItem = Nothing
 
-    Sub New(ByVal CL As Socket)
+    Sub New(ByVal CL As Socket, SR As Server)
+
         C = CL
+        S = SR
         C.ReceiveBufferSize = 1024 * 500
         C.SendBufferSize = 1024 * 500
         IsConnected = True
@@ -28,12 +31,15 @@ Public Class Client
         MS = New MemoryStream
         IP = CL.RemoteEndPoint.ToString
 
-        C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
+        If S.Blocked.Contains(IP.Split(":")(0)) Then
+            isDisconnected()
+        Else
+            C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
+        End If
+
     End Sub
 
     Async Sub BeginReceive(ByVal ar As IAsyncResult)
-        Threading.Thread.Sleep(1)
-        ' Await Task.Delay(1)
         If IsConnected = False Then isDisconnected()
         Try
             Dim Received As Integer = C.EndReceive(ar)
@@ -68,20 +74,28 @@ Public Class Client
                 End If
             Else
                 isDisconnected()
+                Exit Sub
             End If
             C.BeginReceive(Buffer, 0, Buffer.Length, SocketFlags.None, New AsyncCallback(AddressOf BeginReceive), C)
+        Catch ex As Exception
+            Debug.WriteLine("BeginReceive " + ex.Message)
+            isDisconnected()
+            Exit Sub
+        End Try
+    End Sub
+
+    Sub Send(ByVal b As Byte())
+        Try
+            Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(AddressOf BeginSend), b)
         Catch ex As Exception
             isDisconnected()
         End Try
     End Sub
 
-    Sub Send(ByVal b As Byte())
-        Threading.ThreadPool.QueueUserWorkItem(New Threading.WaitCallback(AddressOf BeginSend), b)
-    End Sub
-
-    Async Sub BeginSend(ByVal b As Byte())
+    Async Sub BeginSend(ByVal Data As Byte())
         Try
             Using MS As New MemoryStream
+                Dim b As Byte() = AES_Encryptor(Data)
                 Dim L As Byte() = SB(b.Length & CChar(vbNullChar))
                 Await MS.WriteAsync(L, 0, L.Length)
                 Await MS.WriteAsync(b, 0, b.Length)
@@ -90,6 +104,7 @@ Public Class Client
                 C.Send(MS.ToArray, 0, MS.Length, SocketFlags.None)
             End Using
         Catch ex As Exception
+            Debug.WriteLine("BeginSend " + ex.Message)
             isDisconnected()
         End Try
     End Sub
@@ -98,6 +113,7 @@ Public Class Client
         Try
             C.EndSend(ar)
         Catch ex As Exception
+            Debug.WriteLine("EndSend " + ex.Message)
         End Try
     End Sub
 
@@ -111,20 +127,27 @@ Public Class Client
                 Messages.F.Invoke(New _isDisconnected(AddressOf isDisconnected))
                 Exit Sub
             Else
-                L.Remove()
+                If L IsNot Nothing Then
+                    L.Remove()
+                End If
             End If
         Catch ex As Exception
+            Debug.WriteLine("L.Remove " + ex.Message)
         End Try
+
 
         Try
             C.Close()
             C.Dispose()
         Catch ex As Exception
+            Debug.WriteLine("C.Close " + ex.Message)
         End Try
 
         Try
+            MS.Close()
             MS.Dispose()
         Catch ex As Exception
+            Debug.WriteLine("MS.Dispose " + ex.Message)
         End Try
 
     End Sub

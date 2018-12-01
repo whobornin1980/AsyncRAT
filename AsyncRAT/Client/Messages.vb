@@ -5,7 +5,7 @@ Public Class Messages
 
     Public Shared Sub Read(ByVal b As Byte())
         Try
-            Dim A As String() = Split(BS(b), SPL)
+            Dim A As String() = Split(BS(AES_Decryptor(b)), SPL)
             Select Case A(0)
 
                 Case "CLOSE"

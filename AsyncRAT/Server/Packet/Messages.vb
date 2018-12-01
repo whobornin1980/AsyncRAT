@@ -5,7 +5,7 @@
 
     Public Shared Sub Read(ByVal C As Client, ByVal b() As Byte)
         Try
-            Dim A As String() = Split(BS(b), Settings.SPL)
+            Dim A As String() = Split(BS(AES_Decryptor(b, C)), Settings.SPL)
             Select Case A(0)
 
                 Case "INFO"
@@ -59,7 +59,7 @@
             End Select
             Exit Sub
         Catch ex As Exception
-            ' MsgBox(ex.Message)
+            Debug.WriteLine("Messages" + ex.Message)
         End Try
     End Sub
 

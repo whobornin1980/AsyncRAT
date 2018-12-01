@@ -48,6 +48,7 @@ Public Class Form1
                     End Try
                 Next
             Catch ex As Exception
+                Debug.WriteLine("CLOSEToolStripMenuItem " + ex.Message)
             End Try
         End If
     End Sub
@@ -74,6 +75,7 @@ Public Class Form1
                     Next
                 End If
             Catch ex As Exception
+                Debug.WriteLine("UPDATEToolStripMenuItem " + ex.Message)
             End Try
         End If
     End Sub
@@ -100,6 +102,7 @@ Public Class Form1
                     Next
                 End If
             Catch ex As Exception
+                Debug.WriteLine("DownloadAndExecuteToolStripMenuItem " + ex.Message)
             End Try
         End If
     End Sub
@@ -117,8 +120,8 @@ Public Class Form1
                     Catch ex As Exception
                     End Try
                 Next
-
             Catch ex As Exception
+                Debug.WriteLine("RemoteDesktopToolStripMenuItem " + ex.Message)
             End Try
         End If
     End Sub
@@ -128,6 +131,7 @@ Public Class Form1
             ToolStripStatusLabel1.Text = String.Format("Total Clients [{0}]       Selected Clients [{1}]       Listening Ports [{2}]", LV1.Items.Count.ToString, LV1.SelectedItems.Count.ToString, String.Join(",", Settings.Ports.ToList))
             Text = "AsyncRAT  // NYAN CAT  // " + DateTime.Now
         Catch ex As Exception
+            Debug.WriteLine("Timer_Status " + ex.Message)
         End Try
     End Sub
 
@@ -145,6 +149,7 @@ Public Class Form1
                 Next
 
             Catch ex As Exception
+                Debug.WriteLine("Timer_Ping " + ex.Message)
             End Try
         End If
     End Sub
@@ -161,6 +166,7 @@ Public Class Form1
             Dim hitInfo = LV1.HitTest(e.Location)
             If e.Button = MouseButtons.Left AndAlso (hitInfo.Item IsNot Nothing OrElse hitInfo.SubItem IsNot Nothing) Then LV1.Items(hitInfo.Item.Index).Selected = True
         Catch ex As Exception
+            Debug.WriteLine("LV1_MouseMove " + ex.Message)
         End Try
     End Sub
 

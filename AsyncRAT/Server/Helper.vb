@@ -9,23 +9,61 @@
     End Function
 
     Function _Size(ByVal Size As String) As String
-        If (Size.ToString.Length < 4) Then
-            Return (CInt(Size) & " Bytes")
-        End If
-        Dim str As String = String.Empty
-        Dim num As Double = CDbl(Size) / 1024
-        If (num < 1024) Then
-            str = " KB"
-        Else
-            num = (num / 1024)
+        Try
+            If (Size.ToString.Length < 4) Then
+                Return (CInt(Size) & " Bytes")
+            End If
+            Dim str As String = String.Empty
+            Dim num As Double = CDbl(Size) / 1024
             If (num < 1024) Then
-                str = " MB"
+                str = " KB"
             Else
                 num = (num / 1024)
-                str = " GB"
+                If (num < 1024) Then
+                    str = " MB"
+                Else
+                    num = (num / 1024)
+                    str = " GB"
+                End If
             End If
-        End If
-        Return (num.ToString(".0") & str)
+            Return (num.ToString(".0") & str)
+        Catch ex As Exception
+            Debug.WriteLine("_Size" + ex.Message)
+        End Try
+    End Function
+
+    Function AES_Encryptor(ByVal input As Byte()) As Byte()
+        Dim AES As New Security.Cryptography.RijndaelManaged
+        Dim SHA256 As New Security.Cryptography.SHA256Cng
+        Dim ciphertext As String = ""
+        Try
+            AES.Key = SHA256.ComputeHash(SB(Settings.KEY))
+            AES.Mode = Security.Cryptography.CipherMode.ECB
+            Dim DESEncrypter As Security.Cryptography.ICryptoTransform = AES.CreateEncryptor
+            Dim Buffer As Byte() = input
+            Return DESEncrypter.TransformFinalBlock(Buffer, 0, Buffer.Length)
+        Catch ex As Exception
+            Debug.WriteLine("AES_Encryptor" + ex.Message)
+        End Try
+    End Function
+
+    Function AES_Decryptor(ByVal input As Byte(), Optional C As Client = Nothing) As Byte()
+        Dim AES As New Security.Cryptography.RijndaelManaged
+        Dim SHA256 As New Security.Cryptography.SHA256Cng
+        Try
+            AES.Key = SHA256.ComputeHash(SB(Settings.KEY))
+            AES.Mode = Security.Cryptography.CipherMode.ECB
+            Dim DESDecrypter As Security.Cryptography.ICryptoTransform = AES.CreateDecryptor
+            Dim Buffer As Byte() = input
+            Return DESDecrypter.TransformFinalBlock(Buffer, 0, Buffer.Length)
+        Catch ex As Exception
+            Debug.WriteLine("AES_Decryptor" + ex.Message)
+            If C.IsConnected Then
+                C.S.Blocked.Add(C.IP.ToString.Split(":")(0))
+                C.isDisconnected()
+            End If
+        End Try
+        Return Nothing
     End Function
 
 End Module

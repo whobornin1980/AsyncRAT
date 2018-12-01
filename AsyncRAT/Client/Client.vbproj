@@ -57,6 +57,7 @@
     <Compile Include="Helper.vb" />
     <Compile Include="Main.vb" />
     <Compile Include="RemoteDesktop.vb" />
+    <Compile Include="Settings.vb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="My Project\" />

