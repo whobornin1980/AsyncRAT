@@ -89,25 +89,25 @@ Partial Class Form1
         Me.ClientMenu.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.ClientMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DownloadAndExecuteToolStripMenuItem, Me.RemoteDesktopToolStripMenuItem, Me.CLIENTToolStripMenuItem, Me.ToolStripSeparator1, Me.AboutToolStripMenuItem})
         Me.ClientMenu.Name = "ClientMenu"
-        Me.ClientMenu.Size = New System.Drawing.Size(224, 114)
+        Me.ClientMenu.Size = New System.Drawing.Size(241, 147)
         '
         'DownloadAndExecuteToolStripMenuItem
         '
         Me.DownloadAndExecuteToolStripMenuItem.Name = "DownloadAndExecuteToolStripMenuItem"
-        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
+        Me.DownloadAndExecuteToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.DownloadAndExecuteToolStripMenuItem.Text = "UPLOAD FILE"
         '
         'RemoteDesktopToolStripMenuItem
         '
         Me.RemoteDesktopToolStripMenuItem.Name = "RemoteDesktopToolStripMenuItem"
-        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
+        Me.RemoteDesktopToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.RemoteDesktopToolStripMenuItem.Text = "REMOTE DESKTOP"
         '
         'CLIENTToolStripMenuItem
         '
         Me.CLIENTToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CLOSEToolStripMenuItem, Me.UPDATEToolStripMenuItem})
         Me.CLIENTToolStripMenuItem.Name = "CLIENTToolStripMenuItem"
-        Me.CLIENTToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
+        Me.CLIENTToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.CLIENTToolStripMenuItem.Text = "CLIENT"
         '
         'CLOSEToolStripMenuItem
@@ -125,13 +125,13 @@ Partial Class Form1
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(220, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(237, 6)
         '
         'AboutToolStripMenuItem
         '
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(223, 26)
-        Me.AboutToolStripMenuItem.Text = "About"
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.AboutToolStripMenuItem.Text = "ABOUT"
         '
         'Timer_Ping
         '

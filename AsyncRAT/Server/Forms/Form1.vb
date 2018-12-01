@@ -28,7 +28,8 @@ Public Class Form1
 
         For Each i In Settings.Ports.ToList
             S = New Server
-            S.Start(i)
+            Dim listener As New Threading.Thread(New Threading.ParameterizedThreadStart(AddressOf S.Start))
+            listener.Start(i)
         Next
 
     End Sub

@@ -1,7 +1,7 @@
 ﻿Imports System.IO
 
 Public Class Messages
-    Private Shared SPL = ClientSocket.SPL
+    Private Shared ReadOnly SPL = ClientSocket.SPL
 
     Public Shared Sub Read(ByVal b As Byte())
         Try

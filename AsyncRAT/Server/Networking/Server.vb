@@ -22,7 +22,8 @@ Public Class Server
             S.Listen(999)
 
             While True
-                Await Task.Delay(1)
+                Threading.Thread.Sleep(1)
+                'Await Task.Delay(1)
                 S.BeginAccept(New AsyncCallback(AddressOf EndAccept), S)
             End While
         Catch ex As Exception

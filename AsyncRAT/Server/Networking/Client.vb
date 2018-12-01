@@ -32,6 +32,8 @@ Public Class Client
     End Sub
 
     Async Sub BeginReceive(ByVal ar As IAsyncResult)
+        Threading.Thread.Sleep(1)
+        ' Await Task.Delay(1)
         If IsConnected = False Then isDisconnected()
         Try
             Dim Received As Integer = C.EndReceive(ar)
